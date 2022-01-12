@@ -1,4 +1,3 @@
-import db from "../database/connection";
 const baseUrl = process.env.API_BASE_URL;
 const firstCursor = process.env.API_HISTORY_ENDPOINT;
 if (!firstCursor) throw Error("Please specify API_HISTORY_ENDPOINT in .env");
