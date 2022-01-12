@@ -5,12 +5,12 @@ const firstCursor = process.env.API_HISTORY_ENDPOINT;
 if (!firstCursor) throw Error("Please specify API_HISTORY_ENDPOINT in .env");
 if (!baseUrl) throw Error("Please specify API_BASE_URL in .env");
 
-type ApiPage = {
-    cursor: string | null;
-    data: GameResult[];
-};
-
 export async function* fetchUntilCursor(targetCursor: string | null) {
+    type ApiPage = {
+        cursor: string | null;
+        data: GameResult[];
+    };
+
     let currentCursor: string | null = firstCursor!;
     while (currentCursor) {
         const response = await fetch(`${baseUrl}${currentCursor}`);
