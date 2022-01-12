@@ -16,15 +16,15 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
         const response = await fetch(`${baseUrl}${currentCursor}`);
         const page = (await response.json()) as ApiPage;
 
+        yield page.data;
+
         const nextCursor = page.cursor;
         if (nextCursor === targetCursor) {
-            return page.data;
+            return;
         } else {
-            yield page.data;
+            currentCursor = nextCursor;
+            await sleep(150);
         }
-
-        currentCursor = nextCursor;
-        await sleep(150);
     }
 }
 
