@@ -24,9 +24,7 @@ CREATE TABLE unequal_matches (
     winner_player_id  INTEGER     NOT NULL REFERENCES players,
     loser_player_id   INTEGER     NOT NULL REFERENCES players,
     winner_gesture_id INTEGER     NOT NULL REFERENCES gestures,
-    loser_gesture_id  INTEGER     NOT NULL REFERENCES gestures,
-    INDEX (winner_player_id),
-    INDEX (loser_player_id),
+    loser_gesture_id  INTEGER     NOT NULL REFERENCES gestures
 );
 
 CREATE TABLE tied_matches (
@@ -34,7 +32,5 @@ CREATE TABLE tied_matches (
     played_at   TIMESTAMPTZ NOT NULL,
     player_a_id INTEGER     NOT NULL REFERENCES players,
     player_b_id INTEGER     NOT NULL REFERENCES players,
-    gesture_id  INTEGER     NOT NULL REFERENCES gestures,
-    INDEX (player_a_id),
-    INDEX (player_b_id)
+    gesture_id  INTEGER     NOT NULL REFERENCES gestures
 );
