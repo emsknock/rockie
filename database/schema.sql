@@ -19,7 +19,7 @@ CREATE TABLE players (
 --------------------------------------------------------------------------------
 
 CREATE TABLE unequal_matches (
-    id                SERIAL      PRIMARY KEY,
+    id                BIGINT      PRIMARY KEY,
     played_at         TIMESTAMPTZ NOT NULL,
     winner_player_id  INTEGER     NOT NULL REFERENCES players,
     loser_player_id   INTEGER     NOT NULL REFERENCES players,
@@ -30,7 +30,7 @@ CREATE TABLE unequal_matches (
 );
 
 CREATE TABLE tied_matches (
-    id          SERIAL      PRIMARY KEY,
+    id          BIGINT      PRIMARY KEY,
     played_at   TIMESTAMPTZ NOT NULL,
     player_a_id INTEGER     NOT NULL REFERENCES players,
     player_b_id INTEGER     NOT NULL REFERENCES players,
