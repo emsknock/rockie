@@ -2,8 +2,8 @@ import { Generated } from "kysely";
 
 export interface RpsDatabase {
     gestures: {
-        id: Generated<number>;
-        shape_name: string;
+        id: number;
+        shape_name: "rock" | "paper" | "scissors";
     };
 
     players: {
@@ -27,17 +27,12 @@ export interface RpsDatabase {
         gesture_id: number;
     };
 
-    staging_unequal_matches: {
+    staging_matches: {
+        id: BigInt;
         played_at_epoch: number;
-        winner_player_name: string;
-        loser_player_name: string;
-        winner_gesture_name: string;
-        loser_gesture_name: string;
-    };
-    staging_tied_matches: {
-        played_at_epoch: number;
-        player_a_name: string;
-        player_b_name: string;
-        gesture_name: string;
+        player_a_full_name: string;
+        player_b_full_name: string;
+        player_a_gesture_id: number;
+        player_b_gesture_id: number;
     };
 }
