@@ -15,6 +15,7 @@ CREATE TABLE players (
 
 CREATE TABLE unequal_matches (
     id                BIGINT  PRIMARY KEY,
+    played_at         TIMESTAMP,
     winner_player_id  INTEGER REFERENCES players,
     winner_gesture_id INTEGER REFERENCES gestures,
     loser_player_id   INTEGER REFERENCES players,
@@ -23,6 +24,7 @@ CREATE TABLE unequal_matches (
 
 CREATE TABLE tied_matches (
     id          BIGINT  PRIMARY KEY,
+    played_at   TIMESTAMP,
     player_a_id INTEGER REFERENCES players,
     player_b_id INTEGER REFERENCES players,
     gesture_id  INTEGER REFERENCES gestures

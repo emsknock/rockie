@@ -1,5 +1,6 @@
 CREATE TABLE staging_matches (
     id                  BIGINT  PRIMARY KEY,
+    played_at_epoch     BIGINT,
     player_a_full_name  TEXT,
     player_b_full_name  TEXT,
     player_a_gesture_id INTEGER,
@@ -58,8 +59,9 @@ ON CONFLICT DO NOTHING;
 
 -- All players in staging now definitely have an id, so it is safe to insert matches 
       INSERT INTO tied_matches
-             (id, player_a_id, player_b_id, gesture_id)
+             (id, played_at, player_a_id, player_b_id, gesture_id)
       SELECT staging.id,
+             to_timestamp(staging.played_at_epoch / 1000.0),
              player_id_by_name(staging.player_a_full_name),
              player_id_by_name(staging.player_b_full_name),
              player_a_gesture_id
@@ -69,8 +71,9 @@ ON CONFLICT DO NOTHING;
 
 -- Unequal matches where player A won i.e. game_result(a, b) = 1
      INSERT INTO unequal_matches
-            (id, winner_player_id, loser_player_id, winner_gesture_id, loser_gesture_id)
+            (id, played_at, winner_player_id, loser_player_id, winner_gesture_id, loser_gesture_id)
      SELECT staging.id,
+            to_timestamp(staging.played_at_epoch / 1000.0),
             player_id_by_name(staging.player_a_full_name) AS winner_player_id,
             player_id_by_name(staging.player_b_full_name) AS loser_player_id,
             player_a_gesture_id AS winner_gesture_id,
@@ -81,8 +84,9 @@ ON CONFLICT DO NOTHING;
 
 -- Unequal matches where player B won i.e. game_result(a, b) = 2
 INSERT INTO unequal_matches
-            (id, winner_player_id, loser_player_id, winner_gesture_id, loser_gesture_id)
+            (id, played_at, winner_player_id, loser_player_id, winner_gesture_id, loser_gesture_id)
      SELECT staging.id,
+            to_timestamp(staging.played_at_epoch / 1000.0),
             player_id_by_name(staging.player_b_full_name) AS winner_player_id,
             player_id_by_name(staging.player_a_full_name) AS loser_player_id,
             player_b_gesture_id AS winner_gesture_id,
