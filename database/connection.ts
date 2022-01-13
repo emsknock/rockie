@@ -1,6 +1,6 @@
 import pg from "pg";
 import { Kysely, PostgresDialect } from "kysely";
-import { RpsDatabase } from "./schema/schema";
+import { RpsDatabase } from "./schema";
 
 pg.types.setTypeParser(20, BigInt);
 
