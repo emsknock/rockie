@@ -12,7 +12,7 @@ export interface RpsDatabase {
     };
 
     unequal_matches: {
-        id: BigInt;
+        id: number;
         played_at: Date;
         winner_player_id: number;
         loser_player_id: number;
@@ -20,7 +20,7 @@ export interface RpsDatabase {
         loser_gesture_id: number;
     };
     tied_matches: {
-        id: BigInt;
+        id: number;
         played_at: Date;
         player_a_id: number;
         player_b_id: number;
@@ -28,7 +28,7 @@ export interface RpsDatabase {
     };
 
     staging_matches: {
-        id: BigInt;
+        id: number;
         played_at_epoch: number;
         player_a_full_name: string;
         player_b_full_name: string;
