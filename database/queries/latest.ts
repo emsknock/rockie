@@ -1,19 +1,19 @@
 import db from "../connection";
 
-export default async function getLatestMatches(count = 50): Promise<
-    Array<{
-        match_id: number;
-        winner_name: string | null;
-        loser_name: string | null;
-        winner_hand: string | null;
-        loser_hand: string | null;
-        played_at: Date;
-        match_type: "tied" | "unequal";
-    }>
-> {
-    return db
-        .selectFrom((eb) =>
-            eb
+export type MatchRecord = {
+    match_id: number;
+    winner_name: string | null;
+    loser_name: string | null;
+    winner_hand: string | null;
+    loser_hand: string | null;
+    played_at: Date;
+    match_type: "tied" | "unequal";
+};
+
+export const getLatestMatches = async (count = 50): Promise<MatchRecord[]> =>
+    db
+        .selectFrom((subquery) =>
+            subquery
                 .selectFrom("unequal_matches")
                 .select([
                     "id",
@@ -22,10 +22,12 @@ export default async function getLatestMatches(count = 50): Promise<
                     "winner_gesture_id",
                     "loser_gesture_id",
                     "played_at",
-                    db.raw<"unequal" | "tied">("'unequal'").as("match_type"),
+                    subquery
+                        .raw<"unequal" | "tied">("'unequal'")
+                        .as("match_type"),
                 ])
                 .unionAll(
-                    db
+                    subquery
                         .selectFrom("tied_matches")
                         .select([
                             "id",
@@ -34,7 +36,7 @@ export default async function getLatestMatches(count = 50): Promise<
                             "gesture_id as winner_gesture_id",
                             "gesture_id as loser_gesture_id",
                             "played_at",
-                            db
+                            subquery
                                 .raw<"unequal" | "tied">("'tied'")
                                 .as("match_type"),
                         ])
@@ -73,4 +75,3 @@ export default async function getLatestMatches(count = 50): Promise<
         .limit(count)
         .orderBy("played_at", "desc")
         .execute();
-}
