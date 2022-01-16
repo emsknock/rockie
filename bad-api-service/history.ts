@@ -25,6 +25,7 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
         }
 
         url = new URL(nextCursor, url);
+        // TODO: Dynamic rate limiting based on api responses
         await sleep(150);
     }
 }
