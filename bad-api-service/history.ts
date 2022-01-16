@@ -9,7 +9,7 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
 
     if (!historyUrl) throw Error("Please specify BAD_API_HISTORY_URL in .env");
 
-    const url = new URL(historyUrl);
+    let url = new URL(historyUrl);
 
     while (true) {
         const response = await fetch(url.toString());
@@ -22,7 +22,7 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
             return;
         }
 
-        url.pathname = nextCursor;
+        url = new URL(nextCursor, url);
         await sleep(150);
     }
 }
