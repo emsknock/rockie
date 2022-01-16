@@ -2,7 +2,7 @@ import { xxh32 } from "@node-rs/xxhash";
 
 export const normaliseMatchId = (gameId: string) => xxh32(gameId);
 
-export const gestureNameToId = (name: string) => {
+export const gestureId = (name: string) => {
     switch (name.toLowerCase()) {
         case "rock":
             return 0;
