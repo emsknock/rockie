@@ -14,3 +14,9 @@ export const gestureId = (name: string) => {
             throw Error(`Unknown gesture name: ${name}`);
     }
 };
+
+export const enum GestureId {
+    rock = 0,
+    paper = 1,
+    scissors = 2,
+}
