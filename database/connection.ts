@@ -2,8 +2,6 @@ import pg from "pg";
 import { Kysely, PostgresDialect } from "kysely";
 import { RpsDatabase } from "./schema";
 
-pg.types.setTypeParser(20, BigInt);
-
 const isDev = process.env.NODE_ENV === "development";
 const postgresUri = process.env.POSTGRES_URI;
 if (!postgresUri) throw new Error("Please specify POSTGRES_URI in .env");
