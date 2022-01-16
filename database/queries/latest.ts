@@ -1,13 +1,13 @@
 import db from "../connection";
 
 export type MatchRecord = {
-    match_id: number;
-    winner_name: string | null;
-    loser_name: string | null;
-    winner_hand: string | null;
-    loser_hand: string | null;
-    played_at: Date;
-    match_type: "tied" | "unequal";
+    id: number;
+    winnerName: string | null;
+    loserName: string | null;
+    winnerHand: "rock" | "paper" | "scissors" | null;
+    loserHand: "rock" | "paper" | "scissors" | null;
+    playedAt: Date;
+    matchType: "tied" | "unequal";
 };
 
 export const getLatestMatches = async (count = 50): Promise<MatchRecord[]> =>
@@ -64,13 +64,13 @@ export const getLatestMatches = async (count = 50): Promise<MatchRecord[]> =>
             "normalised_matches.loser_gesture_id"
         )
         .select([
-            "normalised_matches.id as match_id",
-            "winner_player.full_name as winner_name",
-            "loser_player.full_name as loser_name",
-            "winner_gesture.shape_name as winner_hand",
-            "loser_gesture.shape_name as loser_hand",
-            "played_at",
-            "match_type",
+            "normalised_matches.id as id",
+            "winner_player.full_name as winnerName",
+            "loser_player.full_name as loserName",
+            "winner_gesture.shape_name as winnerHand",
+            "loser_gesture.shape_name as loserHand",
+            "played_at as playedAt",
+            "match_type as matchType",
         ])
         .limit(count)
         .orderBy("played_at", "desc")
