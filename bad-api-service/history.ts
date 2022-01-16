@@ -15,6 +15,8 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
         const response = await fetch(url.toString());
         const page: ApiPage = await response.json();
 
+        if (page.data.length === 0) return;
+
         yield page;
 
         const nextCursor = page.cursor;
