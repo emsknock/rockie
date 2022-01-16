@@ -1,9 +1,5 @@
 import { GameResult } from "./types";
-const baseUrl = process.env.API_BASE_URL;
-const firstCursor = process.env.API_HISTORY_ENDPOINT;
-
-if (!firstCursor) throw Error("Please specify API_HISTORY_ENDPOINT in .env");
-if (!baseUrl) throw Error("Please specify API_BASE_URL in .env");
+const historyUrl = process.env.BAD_API_HISTORY_URL;
 
 export async function* fetchUntilCursor(targetCursor: string | null) {
     type ApiPage = {
@@ -11,20 +7,23 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
         data: GameResult[];
     };
 
-    let currentCursor: string | null = firstCursor!;
-    while (currentCursor) {
-        const response = await fetch(`${baseUrl}${currentCursor}`);
-        const page = (await response.json()) as ApiPage;
+    if (!historyUrl) throw Error("Please specify BAD_API_HISTORY_URL in .env");
+
+    const url = new URL(historyUrl);
+
+    while (true) {
+        const response = await fetch(url.toString());
+        const page: ApiPage = await response.json();
 
         yield page;
 
         const nextCursor = page.cursor;
-        if (nextCursor === targetCursor) {
+        if (nextCursor === targetCursor || nextCursor === null) {
             return;
-        } else {
-            currentCursor = nextCursor;
-            await sleep(150);
         }
+
+        url.pathname = nextCursor;
+        await sleep(150);
     }
 }
 
