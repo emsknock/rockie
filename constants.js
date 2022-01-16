@@ -1,8 +1,8 @@
 require("dotenv-flow").config();
 
 const port = Number(process.env.PORT || 3001);
-const liveUri = process.env.BAD_API_LIVE_URI;
+const liveUrl = process.env.BAD_API_LIVE_URL;
 
-if (!liveUri) throw Error("Please specify BAD_API_LIVE_URI in .env");
+if (!liveUrl) throw Error("Please specify BAD_API_LIVE_URL in .env");
 
-module.exports = { port, liveUri };
+module.exports = { port, liveUrl };
