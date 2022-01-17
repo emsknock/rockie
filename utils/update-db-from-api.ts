@@ -21,6 +21,6 @@ export const updateDatabaseFromApi = async () => {
             )
             .onConflict((oc) => oc.doNothing())
             .execute();
-        await db.raw("truncate table ??", ["staging_matches"]).execute();
+        await db.raw("truncate table staging_matches").execute();
     }
 };
