@@ -12,7 +12,7 @@ export const updateDatabaseFromApi = async () => {
             .values(
                 page.data.map((match) => ({
                     id: normaliseMatchId(match.gameId),
-                    played_at_epoch: match.t,
+                    played_at: match.t,
                     player_a_full_name: match.playerA.name,
                     player_b_full_name: match.playerB.name,
                     player_a_gesture_id: gestureId(match.playerA.played),
