@@ -13,7 +13,7 @@ export interface RpsDatabase {
 
     unequal_matches: {
         id: number;
-        played_at: Date;
+        played_at: number;
         winner_player_id: number;
         loser_player_id: number;
         winner_gesture_id: number;
@@ -21,7 +21,7 @@ export interface RpsDatabase {
     };
     tied_matches: {
         id: number;
-        played_at: Date;
+        played_at: number;
         player_a_id: number;
         player_b_id: number;
         gesture_id: number;

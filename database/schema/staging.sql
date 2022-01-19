@@ -1,6 +1,6 @@
 CREATE TABLE staging_matches (
     id                  BIGINT  PRIMARY KEY,
-    played_at_epoch     BIGINT,
+    played_at           BIGINT,
     player_a_full_name  TEXT,
     player_b_full_name  TEXT,
     player_a_gesture_id INTEGER,
@@ -63,7 +63,7 @@ ON CONFLICT DO NOTHING;
                 gesture_id
             )
      SELECT staging.id,
-            to_timestamp(staging.played_at_epoch / 1000.0),
+            staging.played_at,
             player_id_by_name(staging.player_a_full_name),
             player_id_by_name(staging.player_b_full_name),
             player_a_gesture_id
@@ -82,7 +82,7 @@ ON CONFLICT DO NOTHING;
                 loser_gesture_id
             )
      SELECT staging.id,
-            to_timestamp(staging.played_at_epoch / 1000.0),
+            staging.played_at,
             player_id_by_name(staging.player_a_full_name) AS winner_player_id,
             player_id_by_name(staging.player_b_full_name) AS loser_player_id,
             player_a_gesture_id AS winner_gesture_id,
@@ -95,7 +95,7 @@ ON CONFLICT DO NOTHING;
 INSERT INTO unequal_matches
             (id, played_at, winner_player_id, loser_player_id, winner_gesture_id, loser_gesture_id)
      SELECT staging.id,
-            to_timestamp(staging.played_at_epoch / 1000.0),
+            staging.played_at,
             player_id_by_name(staging.player_b_full_name) AS winner_player_id,
             player_id_by_name(staging.player_a_full_name) AS loser_player_id,
             player_b_gesture_id AS winner_gesture_id,
