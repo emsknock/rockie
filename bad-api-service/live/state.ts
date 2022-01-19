@@ -58,3 +58,5 @@ const useSocketState = create<State>((set) => {
 
     return initialState;
 });
+
+export default useSocketState;
