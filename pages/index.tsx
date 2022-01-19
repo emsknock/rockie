@@ -1,7 +1,5 @@
 import type { NextPage, GetServerSideProps } from "next";
 import { getLatestMatches, MatchRecord } from "../database/queries/latest";
-import { updateDatabaseFromApi } from "../utils/update-db-from-api";
-const liveWatchUrl = process.env.LIVE_API_WATCHER_URL;
 
 type props = {
     ongoingGames: Array<[number, [string, string]]>;
@@ -27,8 +25,6 @@ const Home: NextPage<props> = ({ latestMatches }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    // await updateDatabaseFromApi();
-
     const latestMatches = await getLatestMatches(50);
 
     return {
