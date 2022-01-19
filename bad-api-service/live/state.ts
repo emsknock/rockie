@@ -1,6 +1,7 @@
 import { GameBegin, GameResult } from "bad-api-service/types";
 import create from "zustand";
 import sock, { parseApiMessage } from "./socket";
+import fallbackFetch from "./socket-fallback";
 
 type State = {
     connected: boolean;
@@ -44,7 +45,22 @@ const useSocketState = create<State>((set) => {
         }));
     }
 
-    sock.addEventListener("open", () => set({ connected: true }));
+    let fallbackIntervalHandle: number;
+    async function fallback() {
+        set(await fallbackFetch());
+    }
+    const stopFallback = () => clearInterval(fallbackIntervalHandle);
+    const startFallback = () =>
+        (fallbackIntervalHandle = window.setInterval(fallback));
+
+    sock.addEventListener("open", () => {
+        set({ connected: true });
+        stopFallback();
+    });
+    sock.addEventListener("close", () => {
+        set({ connected: false });
+        startFallback();
+    });
     sock.addEventListener("message", (message) => {
         const event = parseApiMessage(message.data);
         switch (event.type) {
@@ -59,6 +75,7 @@ const useSocketState = create<State>((set) => {
         }
     });
 
+    fallback();
     return initialState;
 });
 
