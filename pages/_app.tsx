@@ -1,7 +1,12 @@
 import type { AppProps } from "next/app";
+import { FC } from "react";
 
-function MyApp({ Component, pageProps }: AppProps) {
-    return <Component {...pageProps} />;
-}
+import { LiveLayout } from "components/live-layout";
 
-export default MyApp;
+const App: FC<AppProps> = ({ Component: Page, pageProps }) => (
+    <LiveLayout>
+        <Page {...pageProps} />
+    </LiveLayout>
+);
+
+export default App;
