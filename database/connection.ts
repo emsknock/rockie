@@ -3,6 +3,7 @@ import { Kysely, PostgresDialect } from "kysely";
 import { RpsDatabase } from "./schema";
 
 // TODO: Refactor or annotate this to be more understandable
+pg.defaults.parseInt8 = true;
 pg.types.setTypeParser(pg.types.builtins.TIMESTAMP, (value) =>
     Number(new Date(`${value}+0000`))
 );
