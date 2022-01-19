@@ -14,14 +14,23 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
     while (true) {
         const response = await fetch(url.toString());
         const page: ApiPage = await response.json();
-
-        if (page.data.length === 0) return;
-
-        yield page;
-
+        const currentCursor = url.searchParams.get("cursor");
         const nextCursor = page.cursor;
-        if (nextCursor === targetCursor || nextCursor === null) {
-            return;
+
+        const yieldValue = {
+            data: page.data,
+            cursor: currentCursor,
+            nextCursor,
+        };
+
+        if (
+            nextCursor === targetCursor ||
+            nextCursor === null ||
+            page.data.length === 0
+        ) {
+            return yieldValue;
+        } else {
+            yield yieldValue;
         }
 
         url = new URL(nextCursor, url);
