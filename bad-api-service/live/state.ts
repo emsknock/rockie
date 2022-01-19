@@ -45,10 +45,10 @@ const useSocketState = create<State>((set) => {
         }));
     }
 
-    let fallbackIntervalHandle: number;
     async function fallback() {
         set(await fallbackFetch());
     }
+    let fallbackIntervalHandle: number;
     const stopFallback = () => clearInterval(fallbackIntervalHandle);
     const startFallback = () =>
         (fallbackIntervalHandle = window.setInterval(fallback));
