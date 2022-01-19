@@ -29,7 +29,7 @@ export interface RpsDatabase {
 
     staging_matches: {
         id: number;
-        played_at_epoch: number;
+        played_at: number;
         player_a_full_name: string;
         player_b_full_name: string;
         player_a_gesture_id: number;
