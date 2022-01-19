@@ -12,9 +12,9 @@ export type MatchRecord = {
 };
 
 export const getMatches = async (opts: {
-    before: number;
-    limit: number;
-    order: "asc" | "desc";
+    before?: Date;
+    limit?: number;
+    order?: "asc" | "desc";
 }): Promise<MatchRecord[]> =>
     db
         .selectFrom((subquery) =>
@@ -67,7 +67,7 @@ export const getMatches = async (opts: {
             "played_at as playedAt",
             "match_type as matchType",
         ])
-        .where("played_at", "<", new Date(opts.before))
-        .orderBy("played_at", opts.order)
-        .limit(opts.limit)
+        .where("played_at", "<", opts.before ?? new Date())
+        .orderBy("played_at", opts.order ?? "desc")
+        .limit(opts.limit ?? 50)
         .execute();
