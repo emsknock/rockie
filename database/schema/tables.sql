@@ -21,7 +21,7 @@ CREATE TABLE unequal_matches (
     loser_player_id   INTEGER REFERENCES players,
     loser_gesture_id  INTEGER REFERENCES gestures
 );
-CREATE INDEX unequal_matches_played_at_idx ON (played_at);
+CREATE INDEX unequal_matches_played_at_idx ON unequal_matches (played_at);
 
 CREATE TABLE tied_matches (
     id          BIGINT  PRIMARY KEY,
@@ -30,4 +30,4 @@ CREATE TABLE tied_matches (
     player_b_id INTEGER REFERENCES players,
     gesture_id  INTEGER REFERENCES gestures
 );
-CREATE INDEX tied_matches_played_at_idx ON (played_at);
+CREATE INDEX tied_matches_played_at_idx ON tied_matches (played_at);
