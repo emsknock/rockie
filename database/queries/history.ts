@@ -7,7 +7,7 @@ export type MatchRecord = {
     loserName: string | null;
     winnerHand: GestureId;
     loserHand: GestureId;
-    playedAt: Date;
+    playedAt: number;
     matchType: "tied" | "unequal";
 };
 
