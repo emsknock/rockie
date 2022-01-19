@@ -3,11 +3,13 @@ import create from "zustand";
 import sock, { parseApiMessage } from "./socket";
 
 type State = {
+    connected: boolean;
     ongoing: { gameId: string; a: string; b: string }[];
     resolved: { gameId: string; a: string; b: string }[];
 };
 
 const initialState: State = {
+    connected: false,
     ongoing: [],
     resolved: [],
 };
@@ -42,6 +44,7 @@ const useSocketState = create<State>((set) => {
         }));
     }
 
+    sock.addEventListener("open", () => set({ connected: true }));
     sock.addEventListener("message", (message) => {
         const event = parseApiMessage(message.data);
         switch (event.type) {
