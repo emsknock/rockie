@@ -1,14 +1,11 @@
-const normaliseGameId = require("@node-rs/xxhash").xxh32;
-
 const ongoingGames = new Map();
 const resolvedGames = new Map();
 
 function parseApiMessage(data) {
     // The API sends each event as an escaped string that needs to first be
     // unescaped and then parsed. Easiest to just call `JSON.parse` twice.
-    const text = JSON.parse(data);
-    const { gameId, ...event } = JSON.parse(text);
-    event.id = normaliseGameId(gameId);
+    const json = JSON.parse(data);
+    const event = JSON.parse(json);
     return event;
 }
 
