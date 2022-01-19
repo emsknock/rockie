@@ -1,3 +1,5 @@
+import { GameBegin, GameResult } from "bad-api-service/types";
+
 const isBrowser = typeof window !== "undefined";
 const liveUrl = process.env.BAD_API_LIVE_URL;
 if (!liveUrl) throw new Error("Please specify BAD_API_LIVE_URL in .env");
@@ -14,7 +16,7 @@ export function parseApiMessage(data: any) {
     // unescaped and then parsed. Easiest to just call `JSON.parse` twice.
     const json = JSON.parse(data);
     const event = JSON.parse(json);
-    return event;
+    return event as GameBegin | GameResult;
 }
 
 export default sock;
