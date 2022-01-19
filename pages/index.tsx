@@ -2,7 +2,6 @@ import type { NextPage, GetServerSideProps } from "next";
 import { getMatches, MatchRecord } from "database/queries/history";
 
 type props = {
-    ongoingGames: Array<[number, [string, string]]>;
     latestMatches: MatchRecord[];
 };
 
@@ -26,7 +25,6 @@ const Home: NextPage<props> = ({ latestMatches }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
     const latestMatches = await getMatches({ before: new Date(), limit: 50 });
-
     return {
         props: {
             latestMatches,
