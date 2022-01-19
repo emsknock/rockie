@@ -8,19 +8,9 @@ type props = {
     latestMatches: MatchRecord[];
 };
 
-const Home: NextPage<props> = ({ ongoingGames, latestMatches }) => {
+const Home: NextPage<props> = ({ latestMatches }) => {
     return (
-        <div>
-            <h1>Ongoing matches</h1>
-            <p>
-                <ul>
-                    {ongoingGames.map(([id, [aPlayerName, bPlayerName]]) => (
-                        <li key={id}>
-                            {aPlayerName} vs {bPlayerName}
-                        </li>
-                    ))}
-                </ul>
-            </p>
+        <>
             <h1>Latest matches</h1>
             <p>
                 <ul>
@@ -32,24 +22,17 @@ const Home: NextPage<props> = ({ ongoingGames, latestMatches }) => {
                     ))}
                 </ul>
             </p>
-        </div>
+        </>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    if (!liveWatchUrl)
-        throw Error("Please specify LIVE_API_WATCHER_URL in .env");
+    // await updateDatabaseFromApi();
 
-    await updateDatabaseFromApi();
-
-    const [liveGames, latestMatches] = await Promise.all([
-        fetch(liveWatchUrl).then((res) => res.json()),
-        getLatestMatches(50),
-    ]);
+    const latestMatches = await getLatestMatches(50);
 
     return {
         props: {
-            ongoingGames: liveGames.ongoing,
             latestMatches,
         },
     };
