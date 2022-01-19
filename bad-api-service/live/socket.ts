@@ -2,6 +2,7 @@ const isBrowser = typeof window !== "undefined";
 const liveUrl = process.env.BAD_API_LIVE_URL;
 if (!liveUrl) throw new Error("Please specify BAD_API_LIVE_URL in .env");
 
+// Socket related code doesn't need to run server side
 const sock = isBrowser && new WebSocket(liveUrl);
 
 // A copy of the bad-api-watcher's message parsing function.
