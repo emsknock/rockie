@@ -75,6 +75,7 @@ const useSocketState = create<State>((set) => {
         }
     });
 
+    // Populate the state with currently ongoing matches from the api watcher
     fallback();
     return initialState;
 });
