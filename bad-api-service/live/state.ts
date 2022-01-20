@@ -2,7 +2,6 @@ import { GameBegin, GameResult } from "bad-api-service/types";
 import { GestureId } from "database/utils";
 import create from "zustand";
 import sock, { parseApiMessage } from "./socket";
-import fallbackFetch from "./socket-fallback";
 
 type ResolvedMatch = {
     isResolved: true;
@@ -60,21 +59,11 @@ const useLiveState = create<State>((set) => {
         }));
     }
 
-    async function fallback() {
-        set(await fallbackFetch());
-    }
-    let fallbackIntervalHandle: number;
-    const stopFallback = () => window.clearInterval(fallbackIntervalHandle);
-    const startFallback = () =>
-        (fallbackIntervalHandle = window.setInterval(fallback));
-
     sock.addEventListener("open", () => {
         set({ connected: true });
-        stopFallback();
     });
     sock.addEventListener("close", () => {
         set({ connected: false });
-        startFallback();
     });
     sock.addEventListener("message", (message) => {
         const event = parseApiMessage(message.data);
@@ -90,9 +79,6 @@ const useLiveState = create<State>((set) => {
         }
     });
 
-    // Populate the state with currently ongoing matches from the api watcher
-    fallback();
-    startFallback();
     return initialState;
 });
 
