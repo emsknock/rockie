@@ -1,18 +1,36 @@
 import { GestureId } from "utils/gestures";
 import { normaliseGameId } from "utils/hash-id";
 
-export async function parseApiMessage(data: any) {
+export type ParsedGameBeginEvent = {
+    type: "GAME_BEGIN";
+    id: number;
+    aPlayer: string;
+    bPlayer: string;
+};
+export type ParsedGameResultEvent = {
+    type: "GAME_RESULT";
+    id: number;
+    t: number;
+    aPlayer: string;
+    bPlayer: string;
+    aGesture: GestureId;
+    bGesture: GestureId;
+};
+
+export async function parseApiMessage(
+    data: any
+): Promise<ParsedGameBeginEvent | ParsedGameResultEvent> {
     // FIXME: Git submodules would probably allow us to share the code between the
     //        nextjs app and bad-api-watcher. Unfortunately I don't have the time
     //        right now to look into it.
 
-    type GameBegin = {
+    type ApiGameBeginEvent = {
         type: "GAME_BEGIN";
         gameId: string;
         playerA: { name: string };
         playerB: { name: string };
     };
-    type GameResult = {
+    type ApiGameResultEvent = {
         type: "GAME_RESULT";
         gameId: string;
         t: number;
@@ -23,7 +41,7 @@ export async function parseApiMessage(data: any) {
     // The API sends each event as an escaped string that needs to first be
     // unescaped and then parsed. Easiest to just call `JSON.parse` twice.
     const json = JSON.parse(data);
-    const event = JSON.parse(json) as GameBegin | GameResult;
+    const event = JSON.parse(json) as ApiGameBeginEvent | ApiGameResultEvent;
 
     return event.type === "GAME_BEGIN"
         ? {
