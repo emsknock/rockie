@@ -1,7 +1,7 @@
 import create from "zustand";
 import sock from "./socket";
 import { GestureId } from "utils/gestures";
-import { GameResult } from "utils/game-result";
+import { gameResult, GameResult } from "utils/game-result";
 import {
     parseApiMessage,
     ParsedGameResultEvent,
@@ -62,7 +62,7 @@ const useLiveState = create<State>((set) => {
                           ...match,
                           isResolved: true,
                           playedAt: event.t,
-                          result: GameResult.tie,
+                          result: gameResult(event.aGesture, event.bGesture),
                           aGesture: event.aGesture,
                           bGesture: event.bGesture,
                       }
