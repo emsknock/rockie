@@ -1,6 +1,9 @@
 import { fetchUntilCursor } from "../bad-api-service/history";
 import db from "../database/connection";
-import { gestureId, normaliseMatchId } from "../database/utils";
+import { gestureId } from "../database/utils";
+import { xxh32 } from "@node-rs/xxhash";
+
+const normaliseMatchId = (gameId: string) => xxh32(gameId);
 
 export const updateDatabaseFromApi = async () => {
     // TODO: Store the latest saved cursor somewhere and only traverse that far
