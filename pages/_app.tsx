@@ -6,12 +6,10 @@ import { FC } from "react";
 import { watcherUrl } from "utils/env";
 import { LiveLayout } from "components/live-layout";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const App: FC<AppProps> = ({ Component: Page, pageProps }) => (
-    <SWRConfig
-        value={{
-            fetcher: (url: string) => fetch(url).then((res) => res.json()),
-        }}
-    >
+    <SWRConfig value={{ fetcher }}>
         <Head>
             <link
                 rel="preload"
