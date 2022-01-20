@@ -15,7 +15,7 @@ const initialState: State = {
     resolved: [],
 };
 
-const useSocketState = create<State>((set) => {
+const useLiveState = create<State>((set) => {
     // Hook doesn't need to run server-side
     if (!sock) return initialState;
 
@@ -81,4 +81,4 @@ const useSocketState = create<State>((set) => {
     return initialState;
 });
 
-export default useSocketState;
+export default useLiveState;
