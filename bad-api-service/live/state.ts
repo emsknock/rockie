@@ -1,19 +1,29 @@
 import { GameBegin, GameResult } from "bad-api-service/types";
+import { GestureId } from "database/utils";
 import create from "zustand";
 import sock, { parseApiMessage } from "./socket";
 import fallbackFetch from "./socket-fallback";
 
-type State = {
-    connected: boolean;
-    ongoing: { gameId: string; a: string; b: string }[];
-    resolved: { gameId: string; a: string; b: string }[];
+type ResolvedMatch = {
+    isResolved: true;
+    gameId: string;
+    played_at: number;
+    winner: "a" | "b";
+    aPlayer: string;
+    bPlayer: string;
+    aPlayerGesture: GestureId;
+    bPlayerGesture: GestureId;
+};
+type OngoingMatch = {
+    isResolved: false;
+    gameId: string;
+    started_at: number;
+    aPlayer: string;
+    bPlayer: string;
 };
 
-const initialState: State = {
-    connected: false,
-    ongoing: [],
-    resolved: [],
-};
+type State = { connected: boolean; matches: (ResolvedMatch | OngoingMatch)[] };
+const initialState: State = { connected: false, matches: [] };
 
 const useLiveState = create<State>((set) => {
     // Hook doesn't need to run server-side
@@ -21,27 +31,32 @@ const useLiveState = create<State>((set) => {
 
     function beginGame(event: GameBegin) {
         set((s) => ({
-            ongoing: [
-                ...s.ongoing,
+            matches: [
+                ...s.matches,
                 {
+                    isResolved: false,
                     gameId: event.gameId,
-                    a: event.playerA.name,
-                    b: event.playerB.name,
+                    started_at: Date.now(),
+                    aPlayer: event.playerA.name,
+                    bPlayer: event.playerB.name,
                 },
             ],
         }));
     }
     function resolveGame(event: GameResult) {
         set((s) => ({
-            ongoing: s.ongoing.filter((g) => g.gameId !== event.gameId),
-            resolved: [
-                ...s.resolved,
-                {
-                    gameId: event.gameId,
-                    a: event.playerA.name,
-                    b: event.playerB.name,
-                },
-            ],
+            matches: s.matches.map((match) =>
+                match.gameId !== event.gameId
+                    ? match
+                    : {
+                          ...match,
+                          isResolved: true,
+                          played_at: event.t,
+                          winner: "a",
+                          aPlayerGesture: GestureId.rock,
+                          bPlayerGesture: GestureId.rock,
+                      }
+            ),
         }));
     }
 
