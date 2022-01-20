@@ -1,22 +1,27 @@
-import { GameBegin, GameResult } from "bad-api-service/types";
-import { GestureId } from "database/utils";
 import create from "zustand";
-import sock, { parseApiMessage } from "./socket";
+import sock from "./socket";
+import { GestureId } from "utils/gestures";
+import { GameResult } from "utils/game-result";
+import {
+    parseApiMessage,
+    ParsedGameResultEvent,
+    ParsedGameBeginEvent,
+} from "./api-events";
 
 export type ResolvedMatch = {
     isResolved: true;
-    gameId: string;
-    played_at: number;
-    winner: "a" | "b";
+    id: number;
+    playedAt: number;
     aPlayer: string;
     bPlayer: string;
-    aPlayerGesture: GestureId;
-    bPlayerGesture: GestureId;
+    result: GameResult;
+    aGesture: GestureId;
+    bGesture: GestureId;
 };
 export type OngoingMatch = {
     isResolved: false;
-    gameId: string;
-    started_at: number;
+    id: number;
+    startedAt: number;
     aPlayer: string;
     bPlayer: string;
 };
@@ -24,7 +29,7 @@ export type OngoingMatch = {
 export type State = {
     connected: boolean;
     matches: (ResolvedMatch | OngoingMatch)[];
-    clearMatch(id: string): void;
+    clearMatch(id: number): void;
 };
 
 const useLiveState = create<State>((set) => {
@@ -36,32 +41,30 @@ const useLiveState = create<State>((set) => {
             clearMatch: () => null,
         };
 
-    function beginGame(event: GameBegin) {
+    function beginGame(event: ParsedGameBeginEvent) {
         set((s) => ({
             matches: [
                 ...s.matches,
                 {
                     isResolved: false,
-                    gameId: event.gameId,
-                    started_at: Date.now(),
-                    aPlayer: event.playerA.name,
-                    bPlayer: event.playerB.name,
+                    ...event,
+                    startedAt: Date.now(),
                 },
             ],
         }));
     }
-    function resolveGame(event: GameResult) {
+    function resolveGame(event: ParsedGameResultEvent) {
         set((s) => ({
             matches: s.matches.map((match) =>
-                match.gameId !== event.gameId
+                match.id !== event.id
                     ? match
                     : {
                           ...match,
                           isResolved: true,
-                          played_at: event.t,
-                          winner: "a",
-                          aPlayerGesture: GestureId.rock,
-                          bPlayerGesture: GestureId.rock,
+                          playedAt: event.t,
+                          result: GameResult.tie,
+                          aGesture: event.aGesture,
+                          bGesture: event.bGesture,
                       }
             ),
         }));
@@ -73,8 +76,8 @@ const useLiveState = create<State>((set) => {
     sock.addEventListener("close", () => {
         set({ connected: false });
     });
-    sock.addEventListener("message", (message) => {
-        const event = parseApiMessage(message.data);
+    sock.addEventListener("message", async (message) => {
+        const event = await parseApiMessage(message.data);
         switch (event.type) {
             case "GAME_BEGIN":
                 return beginGame(event);
@@ -92,7 +95,7 @@ const useLiveState = create<State>((set) => {
         matches: [],
         clearMatch: (id) =>
             set((s) => ({
-                matches: s.matches.filter((match) => match.gameId !== id),
+                matches: s.matches.filter((match) => match.id !== id),
             })),
     };
 });
