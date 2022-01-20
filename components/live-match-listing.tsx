@@ -1,10 +1,10 @@
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Gesture } from "components/gesture";
 import useLiveState, {
     OngoingMatch,
     ResolvedMatch,
 } from "bad-api-service/live/state";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Gesture } from "./gesture";
 
 export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
     const [ttl, setTtl] = useState(5000);
@@ -13,14 +13,14 @@ export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
         function matchAutoRemoveTimer() {
             if (props.isResolved) {
                 const expireHandle = setTimeout(
-                    () => clearMatch(props.gameId),
+                    () => clearMatch(props.id),
                     5000
                 );
                 setInterval(() => setTtl((t) => t - 10), 10);
                 return () => clearTimeout(expireHandle);
             }
         },
-        [clearMatch, props.gameId, props.isResolved]
+        [clearMatch, props.id, props.isResolved]
     );
 
     return (
@@ -30,9 +30,8 @@ export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
                     <Link href={`/player/${props.aPlayer}`}>
                         {props.aPlayer}
                     </Link>{" "}
-                    (<Gesture id={props.aPlayerGesture} />){" "}
-                    {props.winner === "a" ? "←" : "→"} (
-                    <Gesture id={props.bPlayerGesture} />){" "}
+                    (<Gesture id={props.aGesture} />) vs (
+                    <Gesture id={props.bGesture} />){" "}
                     <Link href={`/player/${props.bPlayer}`}>
                         {props.bPlayer}
                     </Link>{" "}

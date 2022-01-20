@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useLiveState from "bad-api-service/live/state";
-import { LiveMatch } from "./live-match-listing";
+import { LiveMatch } from "components/live-match-listing";
 
 export const LiveLayout: FC = ({ children }) => {
     const matches = useLiveState((s) => s.matches);
@@ -11,7 +11,7 @@ export const LiveLayout: FC = ({ children }) => {
             <h2>Ongoing games</h2>
             <ul>
                 {matches.map((match) => (
-                    <LiveMatch key={match.gameId} {...match} />
+                    <LiveMatch key={match.id} {...match} />
                 ))}
             </ul>
             {children}
