@@ -1,6 +1,6 @@
 import pg from "pg";
 import { Kysely, PostgresDialect } from "kysely";
-import { postgresUrl } from "utils/constants";
+import { postgresUrl } from "utils/env";
 import { RpsDatabase } from "./schema";
 
 // TODO: Refactor or annotate this to be more understandable

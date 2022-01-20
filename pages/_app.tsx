@@ -3,7 +3,7 @@ import Head from "next/head";
 import { SWRConfig } from "swr";
 import { FC } from "react";
 
-import { watcherUrl } from "utils/constants";
+import { watcherUrl } from "utils/env";
 import { LiveLayout } from "components/live-layout";
 
 const App: FC<AppProps> = ({ Component: Page, pageProps }) => (

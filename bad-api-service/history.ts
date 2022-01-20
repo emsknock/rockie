@@ -1,4 +1,4 @@
-import { historyUrl } from "utils/constants";
+import { historyUrl } from "utils/env";
 import { GameResult } from "./types";
 
 export async function* fetchUntilCursor(targetCursor: string | null) {

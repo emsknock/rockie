@@ -1,5 +1,5 @@
 import { GameBegin, GameResult } from "bad-api-service/types";
-import { liveUrl } from "utils/constants";
+import { liveUrl } from "utils/env";
 
 const isBrowser = typeof window !== "undefined";
 
