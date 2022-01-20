@@ -21,12 +21,20 @@ type OngoingMatch = {
     bPlayer: string;
 };
 
-type State = { connected: boolean; matches: (ResolvedMatch | OngoingMatch)[] };
-const initialState: State = { connected: false, matches: [] };
+type State = {
+    connected: boolean;
+    matches: (ResolvedMatch | OngoingMatch)[];
+    clearMatch(id: string): void;
+};
 
 const useLiveState = create<State>((set) => {
     // Hook doesn't need to run server-side
-    if (!sock) return initialState;
+    if (!sock)
+        return {
+            connected: false,
+            matches: [],
+            clearMatch: () => null,
+        };
 
     function beginGame(event: GameBegin) {
         set((s) => ({
@@ -79,7 +87,14 @@ const useLiveState = create<State>((set) => {
         }
     });
 
-    return initialState;
+    return {
+        connected: false,
+        matches: [],
+        clearMatch: (id) =>
+            set((s) => ({
+                matches: s.matches.filter((match) => match.gameId !== id),
+            })),
+    };
 });
 
 export default useLiveState;
