@@ -3,10 +3,8 @@ import Head from "next/head";
 import { SWRConfig } from "swr";
 import { FC } from "react";
 
+import { watcherUrl } from "utils/constants";
 import { LiveLayout } from "components/live-layout";
-
-const watcherUrl = process.env.LIVE_API_WATCHER_URL;
-if (!watcherUrl) throw Error("Please specify LIVE_API_WATCHER_URL in .env");
 
 const App: FC<AppProps> = ({ Component: Page, pageProps }) => (
     <SWRConfig

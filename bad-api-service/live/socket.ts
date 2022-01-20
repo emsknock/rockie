@@ -1,8 +1,7 @@
 import { GameBegin, GameResult } from "bad-api-service/types";
+import { liveUrl } from "utils/constants";
 
 const isBrowser = typeof window !== "undefined";
-const liveUrl = process.env.BAD_API_LIVE_URL;
-if (!liveUrl) throw new Error("Please specify BAD_API_LIVE_URL in .env");
 
 // Socket related code doesn't need to run server side
 const sock = isBrowser && new WebSocket(liveUrl);

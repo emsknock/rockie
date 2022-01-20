@@ -1,13 +1,11 @@
+import { historyUrl } from "utils/constants";
 import { GameResult } from "./types";
-const historyUrl = process.env.BAD_API_HISTORY_URL;
 
 export async function* fetchUntilCursor(targetCursor: string | null) {
     type ApiPage = {
         cursor: string | null;
         data: GameResult[];
     };
-
-    if (!historyUrl) throw Error("Please specify BAD_API_HISTORY_URL in .env");
 
     let url = new URL(historyUrl);
 
