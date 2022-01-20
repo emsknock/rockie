@@ -3,7 +3,7 @@ import { GestureId } from "database/utils";
 import create from "zustand";
 import sock, { parseApiMessage } from "./socket";
 
-type ResolvedMatch = {
+export type ResolvedMatch = {
     isResolved: true;
     gameId: string;
     played_at: number;
@@ -13,7 +13,7 @@ type ResolvedMatch = {
     aPlayerGesture: GestureId;
     bPlayerGesture: GestureId;
 };
-type OngoingMatch = {
+export type OngoingMatch = {
     isResolved: false;
     gameId: string;
     started_at: number;
@@ -21,7 +21,7 @@ type OngoingMatch = {
     bPlayer: string;
 };
 
-type State = {
+export type State = {
     connected: boolean;
     matches: (ResolvedMatch | OngoingMatch)[];
     clearMatch(id: string): void;
