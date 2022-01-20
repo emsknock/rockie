@@ -1,5 +1,5 @@
+import { GestureId } from "utils/gestures";
 import db from "../connection";
-import { GestureId } from "../utils";
 
 type ResultTypeStats = {
     count: number;
