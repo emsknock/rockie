@@ -43,6 +43,11 @@ export async function parseApiMessage(
     const json = JSON.parse(data);
     const event = JSON.parse(json) as ApiGameBeginEvent | ApiGameResultEvent;
 
+    // The API wasn't documented, so it's possible I've missed an event type
+    if (event.type !== "GAME_BEGIN" && event.type !== "GAME_RESULT") {
+        throw Error(`Unknown event type "${(event as any).type}"`);
+    }
+
     return event.type === "GAME_BEGIN"
         ? {
               type: "GAME_BEGIN",
