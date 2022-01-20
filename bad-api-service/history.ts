@@ -4,7 +4,12 @@ import { GameResult } from "./types";
 export async function* fetchUntilCursor(targetCursor: string | null) {
     type ApiPage = {
         cursor: string | null;
-        data: GameResult[];
+        data: Array<{
+            gameId: string;
+            t: number;
+            playerA: { name: string; played: "ROCK" | "PAPER" | "SCISSORS" };
+            playerB: { name: string; played: "ROCK" | "PAPER" | "SCISSORS" };
+        }>;
     };
 
     let url = new URL(historyUrl);
