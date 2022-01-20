@@ -49,7 +49,7 @@ const useSocketState = create<State>((set) => {
         set(await fallbackFetch());
     }
     let fallbackIntervalHandle: number;
-    const stopFallback = () => clearInterval(fallbackIntervalHandle);
+    const stopFallback = () => window.clearInterval(fallbackIntervalHandle);
     const startFallback = () =>
         (fallbackIntervalHandle = window.setInterval(fallback));
 
