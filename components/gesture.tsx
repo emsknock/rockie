@@ -1,4 +1,4 @@
-import { GestureId } from "database/utils";
+import { GestureId } from "utils/gestures";
 
 export function Gesture({ id }: { id: GestureId }) {
     switch (id) {
