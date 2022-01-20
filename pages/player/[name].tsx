@@ -1,4 +1,4 @@
-import type { StatsRecord } from "database/queries/player";
+import type { StatsRecord } from "database/queries/player-stats";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 

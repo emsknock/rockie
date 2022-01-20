@@ -1,4 +1,4 @@
-import { getPlayerStats, StatsRecord } from "database/queries/player";
+import { getPlayerStats, StatsRecord } from "database/queries/player-stats";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
