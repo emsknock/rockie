@@ -102,7 +102,10 @@ const useLiveState = create<State>((set) => {
         clearResolvedMatchesByPlayer: (name) =>
             set((s) => ({
                 matches: s.matches.filter(
-                    (match) => match.aPlayer !== name && match.bPlayer !== name
+                    (match) =>
+                        match.isResolved &&
+                        match.aPlayer !== name &&
+                        match.bPlayer !== name
                 ),
             })),
     };
