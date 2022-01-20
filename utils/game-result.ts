@@ -1,4 +1,4 @@
-import { GestureId } from "database/utils";
+import { GestureId } from "utils/gestures";
 
 export const enum GameResult {
     tie = 0,
