@@ -13,7 +13,7 @@ export default function Player() {
     const page = Number((query.page as string) ?? 0);
 
     const stats = useSWR<StatsRecord>(apiStatsPath(playerName));
-    const matches = useSWR<MatchRecord[]>(apiMatchesPath(playerName, 0));
+    const matches = useSWR<MatchRecord[]>(apiMatchesPath(playerName, page));
 
     return (
         <>
