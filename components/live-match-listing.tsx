@@ -8,7 +8,7 @@ import useLiveState, {
 
 export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
     const [ttl, setTtl] = useState(5000);
-    const clearMatch = useLiveState((s) => s.clearMatch);
+    const clearMatch = useLiveState((s) => s.clearMatchById);
     useEffect(
         function matchAutoRemoveTimer() {
             if (props.isResolved) {

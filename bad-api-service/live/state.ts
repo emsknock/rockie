@@ -29,7 +29,8 @@ export type OngoingMatch = {
 export type State = {
     connected: boolean;
     matches: (ResolvedMatch | OngoingMatch)[];
-    clearMatch(id: number): void;
+    clearMatchById(id: number): void;
+    clearResolvedMatchesByPlayer(name: string): void;
 };
 
 const useLiveState = create<State>((set) => {
@@ -38,7 +39,8 @@ const useLiveState = create<State>((set) => {
         return {
             connected: false,
             matches: [],
-            clearMatch: () => null,
+            clearMatchById: () => null,
+            clearResolvedMatchesByPlayer: () => null,
         };
 
     function beginGame(event: ParsedGameBeginEvent) {
@@ -93,9 +95,15 @@ const useLiveState = create<State>((set) => {
     return {
         connected: false,
         matches: [],
-        clearMatch: (id) =>
+        clearMatchById: (id) =>
             set((s) => ({
                 matches: s.matches.filter((match) => match.id !== id),
+            })),
+        clearResolvedMatchesByPlayer: (name) =>
+            set((s) => ({
+                matches: s.matches.filter(
+                    (match) => match.aPlayer !== name && match.bPlayer !== name
+                ),
             })),
     };
 });
