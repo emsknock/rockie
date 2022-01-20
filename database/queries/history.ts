@@ -1,5 +1,5 @@
-import { GestureId } from "database/utils";
-import db from "../connection";
+import { GestureId } from "utils/gestures";
+import db from "database/connection";
 
 export type MatchRecord = {
     id: number;
