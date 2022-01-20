@@ -46,8 +46,8 @@ const useLiveState = create<State>((set) => {
             matches: [
                 ...s.matches,
                 {
-                    isResolved: false,
                     ...event,
+                    isResolved: false,
                     startedAt: Date.now(),
                 },
             ],
