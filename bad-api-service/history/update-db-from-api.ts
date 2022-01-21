@@ -1,15 +1,11 @@
-import db from "bad-api-service/history/database";
+import db, { getLastCursor } from "bad-api-service/history/database";
 import { fetchUntilCursor } from "bad-api-service/history/fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
 export default async function updateDatabaseFromBadApi() {
     const normalise = await gameIdNormaliser;
-
-    const { lastCursor } = await db
-        .selectFrom("app_meta")
-        .select("last_cursor as lastCursor")
-        .executeTakeFirstOrThrow();
+    const lastCursor = await getLastCursor();
 
     for await (const page of fetchUntilCursor(lastCursor)) {
         db.insertInto("staging_matches")
