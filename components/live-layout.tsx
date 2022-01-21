@@ -1,9 +1,9 @@
 import { FC } from "react";
-import useLiveState from "bad-api-service/live/state";
+import useSocketState from "bad-api-service/live/socket-state";
 import { LiveMatch } from "components/live-match-listing";
 
 export const LiveLayout: FC = ({ children }) => {
-    const matches = useLiveState((s) => s.matches);
+    const matches = useSocketState((s) => s.matches);
 
     return (
         <>

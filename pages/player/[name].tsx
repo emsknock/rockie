@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
-import useLiveState from "bad-api-service/live/state";
+import useSocketState from "bad-api-service/live/socket-state";
 import { GetServerSideProps } from "next";
 
 const apiStatsPath = (name: string) => `/api/player-stats?name=${name}`;
@@ -19,7 +19,7 @@ export default function Player() {
     const playerStats = useSWR<StatsRecord>(apiStatsPath(name));
     const playerHistory = useSWR<MatchRecord[]>(apiMatchesPath(name, page));
 
-    const liveMatches = useLiveState((s) => s.matches);
+    const liveMatches = useSocketState((s) => s.matches);
     const [isNewDataAvailbale, setNewDataAvailable] = useState(false);
     useEffect(() => {
         // Is there a resolved match where

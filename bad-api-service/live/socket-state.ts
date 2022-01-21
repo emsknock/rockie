@@ -26,7 +26,6 @@ export type OngoingMatch = {
     aPlayer: string;
     bPlayer: string;
 };
-
 export type State = {
     connected: boolean;
     matches: (ResolvedMatch | OngoingMatch)[];
@@ -34,7 +33,7 @@ export type State = {
     clearResolvedMatchesByPlayer(name: string): void;
 };
 
-const useLiveState = create<State>((set) => {
+const useSocketState = create<State>((set) => {
     // Hook doesn't need to run server-side
     if (!sock)
         return {
@@ -105,4 +104,4 @@ const useLiveState = create<State>((set) => {
     };
 });
 
-export default useLiveState;
+export default useSocketState;

@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Gesture } from "components/gesture";
-import useLiveState, {
+import useSocketState, {
     OngoingMatch,
     ResolvedMatch,
-} from "bad-api-service/live/state";
+} from "bad-api-service/live/socket-state";
 
 export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
     const [ttl, setTtl] = useState(5000);
-    const clearMatch = useLiveState((s) => s.clearMatchById);
+    const clearMatch = useSocketState((s) => s.clearMatchById);
     useEffect(
         function matchAutoRemoveTimer() {
             if (props.isResolved) {
