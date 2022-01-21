@@ -1,4 +1,4 @@
-import db from "bad-api-service/history/database/connection";
+import db from "../connection";
 
 export default async function getLastCursor(): Promise<string | null> {
     const { lastCursor } = await db
