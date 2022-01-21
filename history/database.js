@@ -1,4 +1,4 @@
-const { postgresUrl } = require("../utils/env");
+const { postgresUrl, isDev } = require("../utils/env");
 const { Kysely, PostgresDialect } = require("kysely");
 
 require("pg").defaults.parseInt8 = true;
