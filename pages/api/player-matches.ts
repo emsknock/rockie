@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getPlayerMatches, MatchRecord } from "database/queries/player-matches";
-import { updateDatabaseFromApi } from "utils/update-db-from-api";
+import { updateDatabaseFromApi } from "bad-api-service/history/update-db-from-api";
 
 export default async function handler(
     req: NextApiRequest,
