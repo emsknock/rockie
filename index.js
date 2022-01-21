@@ -10,10 +10,8 @@ const updateDb = require("./history/update-db");
 const ws = new WebSocket(liveUrl);
 ws.on("message", store.handleEvent);
 
-cron.schedule(dbCronExpr, () => {
-    updateDb();
-    console.log("Db update");
-});
+cron.schedule(dbCronExpr, updateDb);
+updateDb();
 
 const { json, header } = server.reply;
 server({ port }, [
