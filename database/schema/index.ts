@@ -1,6 +1,10 @@
 import { Generated } from "kysely";
 
 export interface RpsDatabase {
+    app_meta: {
+        last_cursor: string;
+    };
+
     gestures: {
         id: number;
         shape_name: "rock" | "paper" | "scissors";

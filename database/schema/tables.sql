@@ -35,3 +35,9 @@ CREATE TABLE tied_matches (
     gesture_id  INTEGER REFERENCES gestures
 );
 CREATE INDEX tied_matches_played_at_idx ON tied_matches (played_at);
+
+-------------------------------------------------------------------------------
+
+CREATE TABLE app_meta (
+    last_cursor TEXT
+);
