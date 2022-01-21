@@ -1,5 +1,5 @@
 import { GestureId } from "utils/gestures";
-import { normaliseGameId } from "utils/hash-id";
+import { gameIdNormaliser } from "utils/hash-id";
 
 export type ParsedGameBeginEvent = {
     type: "GAME_BEGIN";
@@ -48,16 +48,18 @@ export async function parseApiMessage(
         throw Error(`Unknown event type "${(event as any).type}"`);
     }
 
+    const normalise = await gameIdNormaliser;
+
     return event.type === "GAME_BEGIN"
         ? {
               type: "GAME_BEGIN",
-              id: await normaliseGameId(event.gameId),
+              id: normalise(event.gameId),
               aPlayer: event.playerA.name,
               bPlayer: event.playerB.name,
           }
         : {
               type: "GAME_RESULT",
-              id: await normaliseGameId(event.gameId),
+              id: normalise(event.gameId),
               t: event.t,
               aPlayer: event.playerA.name,
               bPlayer: event.playerB.name,
