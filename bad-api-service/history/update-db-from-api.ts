@@ -1,5 +1,5 @@
 import db from "database/connection";
-import { fetchUntilCursor } from "bad-api-service/history";
+import { fetchUntilCursor } from "bad-api-service/history/fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
