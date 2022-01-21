@@ -1,5 +1,5 @@
-const gestureId = require("./utils/gestures");
-const normalise = require("./utils/game-ids");
+const gestureId = require("../utils/gestures");
+const normalise = require("../utils/game-ids");
 
 module.exports = function parseApiMessage(data) {
     // FIXME: Git submodules would probably allow us to share the code between the
