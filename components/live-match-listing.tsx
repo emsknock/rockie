@@ -1,26 +1,30 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Gesture } from "components/gesture";
-import useSocketState, {
-    OngoingMatch,
-    ResolvedMatch,
-} from "bad-api-service/live/socket-state";
+import { OngoingMatch, ResolvedMatch } from "bad-api-service/live/socket-state";
+import { useLiveState } from "bad-api-service/live/hook";
 
 export function LiveMatch(props: ResolvedMatch | OngoingMatch) {
     const [ttl, setTtl] = useState(5000);
-    const clearMatch = useSocketState((s) => s.clearMatchById);
+    const { clearGame } = useLiveState();
     useEffect(
         function matchAutoRemoveTimer() {
             if (props.isResolved) {
                 const expireHandle = setTimeout(
-                    () => clearMatch(props.id),
+                    () => clearGame(props.id),
                     5000
                 );
-                setInterval(() => setTtl((t) => t - 10), 10);
-                return () => clearTimeout(expireHandle);
+                const ttlUpdateInterval = setInterval(
+                    () => setTtl((t) => t - 10),
+                    10
+                );
+                return () => {
+                    window.clearTimeout(expireHandle);
+                    window.clearInterval(ttlUpdateInterval);
+                };
             }
         },
-        [clearMatch, props.id, props.isResolved]
+        [clearGame, props.id, props.isResolved]
     );
 
     return (
