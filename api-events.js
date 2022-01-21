@@ -1,3 +1,5 @@
+const gestureId = require("./utils");
+
 const { xxh32 } = require("@node-rs/xxhash");
 const normaliseGameId = (gameId) => xxh32(gameId) - 0x80000000;
 
@@ -33,16 +35,3 @@ module.exports = function parseApiMessage(data) {
               bGesture: gestureId(event.playerB.played),
           };
 };
-
-function gestureId(name) {
-    switch (name.toLowerCase()) {
-        case "rock":
-            return 0;
-        case "paper":
-            return 1;
-        case "scissors":
-            return 2;
-        default:
-            throw Error(`Unknown gesture "${name}"`);
-    }
-}
