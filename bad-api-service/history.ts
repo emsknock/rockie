@@ -16,10 +16,13 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
     while (true) {
         const response = await fetch(url.toString());
         const page: ApiPage = await response.json();
-        const currentCursor = url.searchParams.get("cursor");
-        const nextCursor = page.cursor;
 
-        const yieldValue = {
+        const nextUrl = page.cursor ? new URL(page.cursor, url) : null;
+
+        const currentCursor = url.searchParams.get("cursor");
+        const nextCursor = nextUrl?.searchParams.get("cursor") ?? null;
+
+        yield {
             data: page.data,
             cursor: currentCursor,
             nextCursor,
@@ -30,12 +33,10 @@ export async function* fetchUntilCursor(targetCursor: string | null) {
             nextCursor === null ||
             page.data.length === 0
         ) {
-            return yieldValue;
-        } else {
-            yield yieldValue;
+            return;
         }
 
-        url = new URL(nextCursor, url);
+        url = nextUrl!;
         // TODO: Dynamic rate limiting based on api responses
         await sleep(150);
     }
