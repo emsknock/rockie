@@ -1,4 +1,4 @@
-const { port, liveUrl } = require("./constants");
+const { port, liveUrl } = require("./utils/env");
 const WebSocket = require("ws");
 const server = require("server");
 const cors = require("cors");
