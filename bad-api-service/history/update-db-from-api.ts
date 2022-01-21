@@ -1,5 +1,5 @@
-import db, { getLastCursor } from "bad-api-service/history/database";
-import { fetchUntilCursor } from "bad-api-service/history/fetch-until-cursor";
+import db, { getLastCursor } from "./database";
+import { fetchUntilCursor } from "./fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
