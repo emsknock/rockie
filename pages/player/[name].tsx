@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
 import useSocketState from "bad-api-service/live/socket-state";
-import { GetServerSideProps } from "next";
 
 const apiStatsPath = (name: string) => `/api/player-stats?name=${name}`;
 const apiMatchesPath = (name: string, page: number) =>
