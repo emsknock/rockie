@@ -1,5 +1,5 @@
 import { GestureId } from "utils/gestures";
-import { gameIdNormaliser } from "utils/hash-id";
+import { gameIdNormaliser } from "utils/game-ids";
 
 export type ParsedGameBeginEvent = {
     type: "GAME_BEGIN";

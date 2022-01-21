@@ -1,6 +1,6 @@
 import db from "database/connection";
 import { fetchUntilCursor } from "bad-api-service/history";
-import { gameIdNormaliser } from "utils/hash-id";
+import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
 export const updateDatabaseFromApi = async () => {
