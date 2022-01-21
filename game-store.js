@@ -1,49 +1,42 @@
-const ongoingGames = new Map();
-const resolvedGames = new Map();
+const parseApiMessage = require("./api-events");
 
-function parseApiMessage(data) {
-    // The API sends each event as an escaped string that needs to first be
-    // unescaped and then parsed. Easiest to just call `JSON.parse` twice.
-    const json = JSON.parse(data);
-    const event = JSON.parse(json);
-    return event;
-}
+// JS maps are iterated in insertion order, so it's safe to use here
+const games = new Map();
 
-const startGame = ({ id, ...game }) => {
-    ongoingGames.set(id, [game.playerA.name, game.playerB.name]);
+const beginGame = ({ id, ...game }) => {
+    ongoingGames.set(game.id, {
+        id,
+        isResolved: false,
+        startedAt: Date.now(),
+        aPlayer: game.aPlayer,
+        bPlayer: game.bPlayer,
+    });
 };
 
-const endGame = ({ id, ...game }) => {
-    const wasOngoing = ongoingGames.delete(id);
-    if (wasOngoing) {
-        resolvedGames.set(id, game);
-    }
+const resolveGame = ({ id, ...game }) => {
+    setTimeout(() => games.delete(id), 5000);
+    ongoingGames.delete(id);
+    resolvedGames.set(id, {
+        id,
+        isResolved: true,
+        playedAt: game.t,
+        aPlayer: game.aPlayer,
+        bPlayer: game.bPlayer,
+        result: (3 + game.aGesture - game.bGesture) % 3,
+        aGesture: game.aGesture,
+        bGesture: game.bGesture,
+    });
 };
-
-setInterval(function dropOldResolvedGames() {
-    const now = new Date();
-    for (const [id, game] of resolvedGames.entries()) {
-        const gameTime = new Date(game.t);
-        if (now - gameTime > 180 * 1000) resolvedGames.delete(id);
-    }
-}, 1000 * 5);
 
 module.exports = {
     handleEvent: (data) => {
         const { type, ...game } = parseApiMessage(data);
         switch (type) {
             case "GAME_BEGIN":
-                startGame(game);
-                break;
+                return beginGame(game);
             case "GAME_RESULT":
-                endGame(game);
-                break;
-            default:
-                throw Error("Unknown event type from live API:", type, game);
+                return resolveGame(game);
         }
     },
-    readout: () => ({
-        ongoing: Array.from(ongoingGames.entries()),
-        resolved: Array.from(resolvedGames.entries()),
-    }),
+    readout: () => Array.from(games.values()),
 };
