@@ -1,4 +1,5 @@
 import create from "zustand";
+import produce from "immer";
 import sock from "./socket";
 import { GestureId } from "utils/gestures";
 import { gameResult, GameResult } from "utils/game-result";
@@ -44,32 +45,30 @@ const useLiveState = create<State>((set) => {
         };
 
     function beginGame(event: ParsedGameBeginEvent) {
-        set((s) => ({
-            matches: [
-                ...s.matches,
-                {
+        set(
+            produce<State>((s) => {
+                s.matches.push({
                     ...event,
                     isResolved: false,
                     startedAt: Date.now(),
-                },
-            ],
-        }));
+                });
+            })
+        );
     }
     function resolveGame(event: ParsedGameResultEvent) {
-        set((s) => ({
-            matches: s.matches.map((match) =>
-                match.id !== event.id
-                    ? match
-                    : {
-                          ...match,
-                          isResolved: true,
-                          playedAt: event.t,
-                          result: gameResult(event.aGesture, event.bGesture),
-                          aGesture: event.aGesture,
-                          bGesture: event.bGesture,
-                      }
-            ),
-        }));
+        set(
+            produce<State>((s) => {
+                const idx = s.matches.findIndex((game) => game.id === event.id);
+                s.matches[idx] = {
+                    ...s.matches[idx],
+                    isResolved: true,
+                    playedAt: event.t,
+                    result: gameResult(event.aGesture, event.bGesture),
+                    aGesture: event.aGesture,
+                    bGesture: event.bGesture,
+                };
+            })
+        );
     }
 
     sock.addEventListener("open", () => {
