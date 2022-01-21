@@ -38,6 +38,8 @@ export async function parseApiMessage(
         playerB: { name: string; played: "ROCK" | "PAPER" | "SCISSORS" };
     };
 
+    const normalise = await gameIdNormaliser;
+
     // The API sends each event as an escaped string that needs to first be
     // unescaped and then parsed. Easiest to just call `JSON.parse` twice.
     const json = JSON.parse(data);
@@ -47,8 +49,6 @@ export async function parseApiMessage(
     if (event.type !== "GAME_BEGIN" && event.type !== "GAME_RESULT") {
         throw Error(`Unknown event type "${(event as any).type}"`);
     }
-
-    const normalise = await gameIdNormaliser;
 
     return event.type === "GAME_BEGIN"
         ? {
