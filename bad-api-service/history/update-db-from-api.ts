@@ -1,4 +1,4 @@
-import db from "bad-api-service/history/database/connection";
+import db from "bad-api-service/history/database";
 import { fetchUntilCursor } from "bad-api-service/history/fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
