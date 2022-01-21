@@ -35,13 +35,12 @@ export default function Player() {
         if (newResolvedMatchExists) setNewDataAvailable(true);
     }, [liveMatches.map((game) => game.id)]);
 
-    useEffect(() => {
-        if (isNewDataAvailbale) playerStats.mutate();
-    }, [isNewDataAvailbale]);
+    useEffect(
+        () => void (isNewDataAvailbale && playerStats.mutate()),
+        [isNewDataAvailbale]
+    );
 
-    useEffect(() => {
-        setNewDataAvailable(false);
-    }, [playerName]);
+    useEffect(() => void setNewDataAvailable(false), [playerName]);
 
     return (
         <>
