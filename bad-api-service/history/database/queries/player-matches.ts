@@ -13,10 +13,14 @@ export type MatchRecord = {
 
 export default async function getPlayerMatches(
     name: string,
-    [cursorTime, cursorId]: [number, number],
+    [cursorTime = Date.now(), cursorId = null]: [number, number | null],
     direction: "forwards" | "backwards" = "forwards",
     limit = 50
-): Promise<MatchRecord[]> {
+): Promise<{
+    startCursor: [number, number];
+    endCursor: [number, number];
+    page: MatchRecord[];
+}> {
     const isForwards = direction === "forwards";
 
     const selectPlayerId = db
@@ -24,7 +28,7 @@ export default async function getPlayerMatches(
         .select("id")
         .where("full_name", "=", name);
 
-    return db
+    const page = await db
         .selectFrom((subquery) =>
             subquery
                 .selectFrom("unequal_matches")
@@ -59,7 +63,9 @@ export default async function getPlayerMatches(
                 .orderBy("played_at", "desc")
                 .orderBy("id", "asc")
                 .where("played_at", isForwards ? "<=" : ">=", cursorTime)
-                .where("id", isForwards ? ">" : "<=", cursorId)
+                .if(cursorId !== null, (q) =>
+                    q.orWhere("id", isForwards ? ">" : "<=", cursorId!)
+                )
                 .limit(limit)
                 .as("normalised_matches")
         )
@@ -83,4 +89,13 @@ export default async function getPlayerMatches(
             "match_type as matchType",
         ])
         .execute();
+
+    const firstRow = page[0];
+    const lastRow = page[page.length - 1];
+
+    return {
+        page,
+        startCursor: [firstRow.playedAt, firstRow.id],
+        endCursor: [lastRow.id, lastRow.id],
+    };
 }
