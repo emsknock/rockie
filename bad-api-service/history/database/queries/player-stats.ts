@@ -24,9 +24,9 @@ const statSelectors = (column: string) =>
         countByCol(column, GestureId.scissors).as("scissorsCount"),
     ] as const;
 
-export const getPlayerStats = async (
+export default async function getPlayerStats(
     name: string
-): Promise<StatsRecord | null> => {
+): Promise<StatsRecord | null> {
     const selectPlayerId = await db
         .selectFrom("players")
         .select("id")
@@ -55,4 +55,4 @@ export const getPlayerStats = async (
             .where("loser_player_id", "=", playerId)
             .executeTakeFirstOrThrow(),
     };
-};
+}

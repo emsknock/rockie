@@ -11,12 +11,12 @@ export type MatchRecord = {
     matchType: "tied" | "unequal";
 };
 
-export const getMatches = async (opts: {
+export default async function getMatches(opts: {
     before?: number;
     limit?: number;
     order?: "asc" | "desc";
-}): Promise<MatchRecord[]> =>
-    db
+}): Promise<MatchRecord[]> {
+    return db
         .selectFrom((subquery) =>
             subquery
                 .selectFrom("unequal_matches")
@@ -71,3 +71,4 @@ export const getMatches = async (opts: {
         .orderBy("played_at", opts.order ?? "desc")
         .limit(opts.limit ?? 50)
         .execute();
+}

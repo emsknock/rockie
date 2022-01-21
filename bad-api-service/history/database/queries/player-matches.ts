@@ -11,11 +11,11 @@ export type MatchRecord = {
     matchType: "tied" | "unequal";
 };
 
-export const getPlayerMatches = async (
+export default async function getPlayerMatches(
     name: string,
     page: number,
     limit = 50
-): Promise<MatchRecord[]> => {
+): Promise<MatchRecord[]> {
     const selectPlayerId = db
         .selectFrom("players")
         .select("id")
@@ -78,4 +78,4 @@ export const getPlayerMatches = async (
             "match_type as matchType",
         ])
         .execute();
-};
+}
