@@ -13,7 +13,7 @@ export type MatchRecord = {
 
 export default async function getPlayerMatches(
     name: string,
-    page: number,
+    [cursorTime, cursorId]: [number, number],
     limit = 50
 ): Promise<MatchRecord[]> {
     const selectPlayerId = db
@@ -54,8 +54,10 @@ export default async function getPlayerMatches(
                 .where("winner_player_id", "=", selectPlayerId)
                 .orWhere("loser_player_id", "=", selectPlayerId)
                 .orderBy("played_at", "desc")
+                .orderBy("id", "asc")
+                .where("played_at", "<=", cursorTime)
+                .where("id", ">", cursorId)
                 .limit(limit)
-                .offset(limit * page)
                 .as("normalised_matches")
         )
         .leftJoin(
