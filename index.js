@@ -2,7 +2,7 @@ const { port, liveUrl } = require("./utils/env");
 const WebSocket = require("ws");
 const server = require("server");
 const cors = require("cors");
-const store = require("./game-store");
+const store = require("./live/game-store");
 const { json, header } = server.reply;
 
 const ws = new WebSocket(liveUrl);
