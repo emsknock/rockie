@@ -59,14 +59,16 @@ const useLiveState = create<State>((set) => {
         set(
             produce<State>((s) => {
                 const idx = s.matches.findIndex((game) => game.id === event.id);
-                s.matches[idx] = {
-                    ...s.matches[idx],
-                    isResolved: true,
-                    playedAt: event.t,
-                    result: gameResult(event.aGesture, event.bGesture),
-                    aGesture: event.aGesture,
-                    bGesture: event.bGesture,
-                };
+                if (idx !== -1) {
+                    s.matches[idx] = {
+                        ...s.matches[idx],
+                        isResolved: true,
+                        playedAt: event.t,
+                        result: gameResult(event.aGesture, event.bGesture),
+                        aGesture: event.aGesture,
+                        bGesture: event.bGesture,
+                    };
+                }
             })
         );
     }
