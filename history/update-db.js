@@ -5,18 +5,15 @@ const normalise = require("../utils/game-ids");
 const gestureId = require("../utils/gestures");
 
 const updateDatabaseFromApi = async () => {
-    console.log("Starting");
     await db.transaction().execute(async (trx) => {
         const { lastCursor } = await trx
             .selectFrom("app_meta")
             .select("last_cursor as lastCursor")
             .executeTakeFirstOrThrow();
 
-        console.log("Started", lastCursor);
         let newLastCursor = null;
 
         for await (const page of fetchUntilCursor(lastCursor)) {
-            console.log("Found page", page.cursor);
             if (newLastCursor === null) {
                 newLastCursor = page.nextCursor;
             }
@@ -44,7 +41,6 @@ const updateDatabaseFromApi = async () => {
             .set({ last_cursor: newLastCursor })
             .execute();
     });
-    console.log("Exit");
 };
 
 module.exports = updateDatabaseFromApi;
