@@ -8,6 +8,7 @@ import {
     ParsedGameResultEvent,
     ParsedGameBeginEvent,
 } from "./api-events";
+import { watcherUrl } from "utils/env";
 
 export type ResolvedMatch = {
     isResolved: true;
@@ -28,16 +29,23 @@ export type OngoingMatch = {
 };
 export type State = {
     connected: boolean;
+    watcherError: boolean;
     matches: (ResolvedMatch | OngoingMatch)[];
     clearMatchById(id: number): void;
     clearResolvedMatchesByPlayer(name: string): void;
 };
+
+const getInitialMatches = () =>
+    fetch(watcherUrl)
+        .then((r) => r.json() as Promise<(OngoingMatch | ResolvedMatch)[]>)
+        .then((l) => l.filter((game) => !game.isResolved) as OngoingMatch[]);
 
 const useSocketState = create<State>((set) => {
     // Hook doesn't need to run server-side
     if (!sock)
         return {
             connected: false,
+            watcherError: false,
             matches: [],
             clearMatchById: () => null,
             clearResolvedMatchesByPlayer: () => null,
@@ -72,21 +80,31 @@ const useSocketState = create<State>((set) => {
         );
     }
 
-    sock.addEventListener("open", () => {
-        set({ connected: true });
-    });
-    sock.addEventListener("close", () => {
-        set({ connected: false });
-    });
-    sock.addEventListener("message", async (message) => {
+    async function handleSocketMessage(message: MessageEvent<any>) {
         const event = await parseApiMessage(message.data);
         return event.type === "GAME_BEGIN"
             ? beginGame(event)
             : resolveGame(event);
+    }
+
+    sock.addEventListener("open", () => {
+        getInitialMatches()
+            .then((list) => set({ matches: list }))
+            .catch(() => set({ watcherError: true }))
+            .finally(() => {
+                set({ connected: true });
+                sock!.addEventListener("message", handleSocketMessage);
+            });
+    });
+
+    sock.addEventListener("close", () => {
+        set({ connected: false });
+        sock!.removeEventListener("message", handleSocketMessage);
     });
 
     return {
         connected: false,
+        watcherError: false,
         matches: [],
         clearMatchById: (id) =>
             set((s) => ({
