@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getPlayerStats, StatsRecord } from "database/queries/player-stats";
+import {
+    getPlayerStats,
+    StatsRecord,
+} from "bad-api-service/history/database/queries/player-stats";
 import { refreshDatabase } from "bad-api-service/history";
 
 export default async function handler(

@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getPlayerMatches, MatchRecord } from "database/queries/player-matches";
+import {
+    getPlayerMatches,
+    MatchRecord,
+} from "bad-api-service/history/database/queries/player-matches";
 import { refreshDatabase } from "bad-api-service/history";
 
 export default async function handler(

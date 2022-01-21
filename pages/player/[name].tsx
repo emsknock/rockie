@@ -1,5 +1,5 @@
-import type { MatchRecord } from "database/queries/player-matches";
-import type { StatsRecord } from "database/queries/player-stats";
+import type { MatchRecord } from "bad-api-service/history/database/queries/player-matches";
+import type { StatsRecord } from "bad-api-service/history/database/queries/player-stats";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";

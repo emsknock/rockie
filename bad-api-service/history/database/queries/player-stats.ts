@@ -1,4 +1,4 @@
-import db from "database/connection";
+import db from "bad-api-service/history/database/connection";
 import { GestureId } from "utils/gestures";
 
 type ResultTypeStats = {
