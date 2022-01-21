@@ -4,7 +4,7 @@ const parseApiMessage = require("./api-events");
 const games = new Map();
 
 const beginGame = ({ id, ...game }) => {
-    ongoingGames.set(game.id, {
+    games.set(game.id, {
         id,
         isResolved: false,
         startedAt: Date.now(),
@@ -15,8 +15,7 @@ const beginGame = ({ id, ...game }) => {
 
 const resolveGame = ({ id, ...game }) => {
     setTimeout(() => games.delete(id), 5000);
-    ongoingGames.delete(id);
-    resolvedGames.set(id, {
+    games.set(id, {
         id,
         isResolved: true,
         playedAt: game.t,
