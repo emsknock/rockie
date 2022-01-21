@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getPlayerMatches, MatchRecord } from "database/queries/player-matches";
-import { updateDatabaseFromApi } from "bad-api-service/history/update-db-from-api";
+import { refreshDatabase } from "bad-api-service/history";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<MatchRecord[] | string>
 ) {
-    await updateDatabaseFromApi();
+    await refreshDatabase();
 
     const page = Number(req.query.page ?? 0);
     const name = req.query.name;

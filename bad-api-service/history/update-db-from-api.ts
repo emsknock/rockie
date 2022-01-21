@@ -3,7 +3,7 @@ import { fetchUntilCursor } from "bad-api-service/history/fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
-export const updateDatabaseFromApi = async () => {
+export default async function updateDatabaseFromBadApi() {
     const normalise = await gameIdNormaliser;
 
     const { lastCursor } = await db
@@ -40,4 +40,4 @@ export const updateDatabaseFromApi = async () => {
 
         await db.raw("truncate table staging_matches").execute();
     }
-};
+}
