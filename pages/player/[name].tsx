@@ -6,17 +6,15 @@ import Link from "next/link";
 import useSWR from "swr";
 import useSocketState from "bad-api-service/live/socket-state";
 
-const apiStatsPath = (name: string) => `/api/player-stats?name=${name}`;
-const apiMatchesPath = (name: string, page: number) =>
-    `/api/player-matches?name=${name}&page=${page}`;
-
 export default function Player() {
     const { query } = useRouter();
     const name = query.name as string;
     const page = Number((query.page as string) ?? 0);
 
-    const playerStats = useSWR<StatsRecord>(apiStatsPath(name));
-    const playerHistory = useSWR<MatchRecord[]>(apiMatchesPath(name, page));
+    const playerStats = useSWR<StatsRecord>(`/api/player-stats?name=${name}`);
+    const playerHistory = useSWR<MatchRecord[]>(
+        `/api/player-matches?name=${name}&page=${page}`
+    );
 
     const liveMatches = useSocketState((s) => s.matches);
     const [isNewDataAvailbale, setNewDataAvailable] = useState(false);
