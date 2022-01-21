@@ -47,4 +47,4 @@ const updateDatabaseFromApi = async () => {
     console.log("Exit");
 };
 
-updateDatabaseFromApi();
+module.exports = updateDatabaseFromApi;
