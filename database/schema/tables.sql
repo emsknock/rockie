@@ -18,7 +18,7 @@ CREATE TABLE players (
 -------------------------------------------------------------------------------
 
 CREATE TABLE unequal_matches (
-    id                BIGINT  PRIMARY KEY,
+    id                INTEGER PRIMARY KEY,
     played_at         BIGINT,
     winner_player_id  INTEGER REFERENCES players,
     winner_gesture_id INTEGER REFERENCES gestures,
@@ -28,7 +28,7 @@ CREATE TABLE unequal_matches (
 CREATE INDEX unequal_matches_played_at_idx ON unequal_matches (played_at);
 
 CREATE TABLE tied_matches (
-    id          BIGINT  PRIMARY KEY,
+    id          INTEGER PRIMARY KEY,
     played_at   BIGINT,
     player_a_id INTEGER REFERENCES players,
     player_b_id INTEGER REFERENCES players,

@@ -1,5 +1,5 @@
 CREATE TABLE staging_matches (
-    id                  BIGINT  PRIMARY KEY,
+    id                  INTEGER PRIMARY KEY,
     played_at           BIGINT,
     player_a_full_name  TEXT,
     player_b_full_name  TEXT,
