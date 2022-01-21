@@ -2,7 +2,7 @@ import { Generated } from "kysely";
 
 export interface RpsDatabase {
     app_meta: {
-        last_cursor: string;
+        last_cursor: string | null;
     };
 
     gestures: {
