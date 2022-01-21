@@ -2,6 +2,7 @@ import type { MatchRecord } from "database/queries/player-matches";
 import type { StatsRecord } from "database/queries/player-stats";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import useSWR from "swr";
 import useLiveState from "bad-api-service/live/state";
 
@@ -53,6 +54,15 @@ export default function Player() {
                     </button>
                 </p>
             )}
+            <nav>
+                <Link href={`/player/${playerName}?page=${pageNumber - 1}`}>
+                    <a>Prev ({pageNumber - 1})</a>
+                </Link>{" "}
+                Page {pageNumber}{" "}
+                <Link href={`/player/${playerName}?page=${pageNumber + 1}`}>
+                    <a>Next {pageNumber + 1}</a>
+                </Link>
+            </nav>
             <ul>
                 {playerHistory.data?.map((match) => (
                     <li key={match.id}>{match.id}</li>
