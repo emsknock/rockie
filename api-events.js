@@ -1,7 +1,5 @@
 const gestureId = require("./utils");
-
-const { xxh32 } = require("@node-rs/xxhash");
-const normaliseGameId = (gameId) => xxh32(gameId) - 0x80000000;
+const normalise = require("./utils/game-ids");
 
 module.exports = function parseApiMessage(data) {
     // FIXME: Git submodules would probably allow us to share the code between the
@@ -21,13 +19,13 @@ module.exports = function parseApiMessage(data) {
     return event.type === "GAME_BEGIN"
         ? {
               type: "GAME_BEGIN",
-              id: normaliseGameId(event.gameId),
+              id: normalise(event.gameId),
               aPlayer: event.playerA.name,
               bPlayer: event.playerB.name,
           }
         : {
               type: "GAME_RESULT",
-              id: normaliseGameId(event.gameId),
+              id: normalise(event.gameId),
               t: event.t,
               aPlayer: event.playerA.name,
               bPlayer: event.playerB.name,
