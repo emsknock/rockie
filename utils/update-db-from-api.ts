@@ -6,17 +6,13 @@ import { gameIdNormaliser } from "utils/hash-id";
 export const updateDatabaseFromApi = async () => {
     const normalise = await gameIdNormaliser;
 
-    db.transaction().execute(async (trx) => {
+    await db.transaction().execute(async (trx) => {
         const { lastCursor } = await trx
             .selectFrom("app_meta")
             .select("last_cursor as lastCursor")
             .executeTakeFirstOrThrow();
 
-        let newLastCursor: string | null = null;
-
         for await (const page of fetchUntilCursor(lastCursor)) {
-            if (newLastCursor === null) newLastCursor = page.nextCursor;
-
             await trx
                 .insertInto("staging_matches")
                 .values(
@@ -46,7 +42,5 @@ export const updateDatabaseFromApi = async () => {
 
             await trx.raw("truncate table staging_matches").execute();
         }
-
-        await trx.updateTable("app_meta").set({ last_cursor: newLastCursor });
     });
 };
