@@ -33,7 +33,7 @@ export default function Player() {
                 !playerHistory.data?.map((g) => g.id).includes(match.id)
         );
         if (newResolvedMatchExists) setNewDataAvailable(true);
-    }, [liveMatches.map((game) => game.id)]);
+    }, [liveMatches.map((game) => game.id), playerName, pageNumber]);
 
     useEffect(
         () => void (isNewDataAvailbale && playerStats.mutate()),
