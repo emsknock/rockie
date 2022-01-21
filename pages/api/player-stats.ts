@@ -1,10 +1,13 @@
-import { getPlayerStats, StatsRecord } from "database/queries/player-stats";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getPlayerStats, StatsRecord } from "database/queries/player-stats";
+import { updateDatabaseFromApi } from "utils/update-db-from-api";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<StatsRecord | string>
 ) {
+    await updateDatabaseFromApi();
+
     const name = req.query.name;
     if (typeof name !== "string")
         return res.status(400).send("Player name must be a string");
