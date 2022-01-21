@@ -79,16 +79,9 @@ const useLiveState = create<State>((set) => {
     });
     sock.addEventListener("message", async (message) => {
         const event = await parseApiMessage(message.data);
-        switch (event.type) {
-            case "GAME_BEGIN":
-                return beginGame(event);
-            case "GAME_RESULT":
-                return resolveGame(event);
-            default:
-                throw Error(
-                    `Unknown event from bad api: ${(event as any).type}`
-                );
-        }
+        return event.type === "GAME_BEGIN"
+            ? beginGame(event)
+            : resolveGame(event);
     });
 
     return {
