@@ -1,5 +1,5 @@
 const { xxh32 } = require("@node-rs/xxhash");
-const normaliseGameId = xxh32;
+const normaliseGameId = (gameId) => xxh32(gameId) - 0x80000000;
 
 module.exports = function parseApiMessage(data) {
     // FIXME: Git submodules would probably allow us to share the code between the
