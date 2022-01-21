@@ -1,23 +1,23 @@
 {
-  "name": "rockie",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@node-rs/xxhash": "^1.1.3",
-    "cors": "^2.8.5",
-    "dotenv-flow": "^3.2.0",
-    "kysely": "^0.16.8",
-    "node-cron": "^3.0.0",
-    "node-fetch": "^2.6.7",
-    "pg": "^8.7.1",
-    "server": "^1.0.37",
-    "ws": "^8.4.2"
-  }
+    "name": "rockie",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@node-rs/xxhash": "^1.1.3",
+        "cors": "^2.8.5",
+        "dotenv-flow": "^3.2.0",
+        "kysely": "^0.16.8",
+        "node-cron": "^3.0.0",
+        "node-fetch": "^2.6.7",
+        "pg": "^8.7.1",
+        "server": "^1.0.37",
+        "ws": "^8.4.2"
+    }
 }
