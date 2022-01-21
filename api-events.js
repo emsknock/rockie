@@ -1,4 +1,4 @@
-const gestureId = require("./utils");
+const gestureId = require("./utils/gestures");
 const normalise = require("./utils/game-ids");
 
 module.exports = function parseApiMessage(data) {
