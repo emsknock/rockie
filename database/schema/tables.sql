@@ -8,10 +8,14 @@ VALUES (0, 'rock'),
        (1, 'paper'),
        (2, 'scissors');
 
+-------------------------------------------------------------------------------
+
 CREATE TABLE players (
     id        SERIAL PRIMARY KEY,
     full_name TEXT   UNIQUE NOT NULL
 );
+
+-------------------------------------------------------------------------------
 
 CREATE TABLE unequal_matches (
     id                BIGINT  PRIMARY KEY,
