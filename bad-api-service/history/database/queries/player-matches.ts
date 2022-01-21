@@ -14,8 +14,11 @@ export type MatchRecord = {
 export default async function getPlayerMatches(
     name: string,
     [cursorTime, cursorId]: [number, number],
+    direction: "forwards" | "backwards" = "forwards",
     limit = 50
 ): Promise<MatchRecord[]> {
+    const isForwards = direction === "forwards";
+
     const selectPlayerId = db
         .selectFrom("players")
         .select("id")
@@ -55,8 +58,8 @@ export default async function getPlayerMatches(
                 .orWhere("loser_player_id", "=", selectPlayerId)
                 .orderBy("played_at", "desc")
                 .orderBy("id", "asc")
-                .where("played_at", "<=", cursorTime)
-                .where("id", ">", cursorId)
+                .where("played_at", isForwards ? "<=" : ">=", cursorTime)
+                .where("id", isForwards ? ">" : "<=", cursorId)
                 .limit(limit)
                 .as("normalised_matches")
         )
