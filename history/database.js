@@ -6,6 +6,7 @@ require("pg").defaults.parseInt8 = true;
 const db = new Kysely({
     dialect: new PostgresDialect({
         connectionString: postgresUrl,
+        ssl: process.env.NODE_ENV === "production",
     }),
 });
 
