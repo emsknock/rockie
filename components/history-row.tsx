@@ -1,8 +1,13 @@
 import type { MatchRecord } from "bad-api-service/history";
 import type { FC } from "react";
+
+import dayJS from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import clsx from "clsx";
 import { Gesture } from "./gesture";
+
+dayJS.extend(relativeTime);
 
 const groupHoverUp =
     "translate-y-2 group-hover:translate-y-0 transition-transform";
@@ -82,7 +87,7 @@ export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
                     groupHoverOpacity
                 )}
             >
-                {timestamp.toUTCString()}
+                {dayJS(timestamp).fromNow()}
             </div>
         </li>
     );
