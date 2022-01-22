@@ -1,5 +1,6 @@
 import type { MatchRecord } from "bad-api-service/history";
 import type { FC } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import { Gesture } from "./gesture";
 
@@ -66,7 +67,13 @@ export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
                     fill={!isTie && !ownWin}
                     flip={false}
                 />
-                <span>{rightName}</span>
+                {rightName === player ? (
+                    <span>{rightName}</span>
+                ) : (
+                    <Link href={`/player/${rightName}`}>
+                        <a className="group-hover:text-blue-500">{rightName}</a>
+                    </Link>
+                )}
             </span>
             <div
                 className={clsx(
