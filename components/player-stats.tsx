@@ -21,7 +21,7 @@ export const PlayerStats: FC<{ name: string }> = ({ name }) => {
         : null;
 
     return (
-        <div className={clsx("flex justify-around my-8")}>
+        <div className={clsx("flex justify-around my-6")}>
             <StatContainer
                 title="Win ratio"
                 component={
