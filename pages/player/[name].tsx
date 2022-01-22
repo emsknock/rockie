@@ -4,9 +4,11 @@ import type { HistoryRecordByPage } from "bad-api-service/history";
 import clsx from "clsx";
 import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
 
+import Link from "next/link";
 import { HistoryRow } from "components/history-row";
 import { PaginationNav } from "components/pagination-nav";
 import { PlayerStats } from "components/player-stats";
+import { FaArrowLeft } from "react-icons/fa";
 
 type props = {
     name: string;
@@ -17,16 +19,20 @@ type props = {
 export default function Player({ name, page, history }: props) {
     return (
         <>
-            <h1
-                className={clsx(
-                    "h-12 mt-32",
-                    "font-semibold text-5xl",
-                    "sticky top-0",
-                    "bg-white z-10"
-                )}
-            >
-                {name}
-            </h1>
+            <div className="px-2 py-4">
+                <Link href="/">
+                    <a
+                        className={clsx(
+                            "flex items-center gap-2",
+                            "text-blue-500"
+                        )}
+                    >
+                        <FaArrowLeft />
+                        <span>Back</span>
+                    </a>
+                </Link>
+            </div>
+            <h1 className={clsx("mt-28", "font-semibold text-5xl")}>{name}</h1>
             <PlayerStats name={name} />
             <ul
                 className={clsx(
