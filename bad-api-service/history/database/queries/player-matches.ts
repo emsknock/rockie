@@ -10,6 +10,11 @@ export type MatchRecord = {
     playedAt: number;
     matchType: "tied" | "unequal";
 };
+export type PlayerMatchesPage = {
+    cursorForwards: string | null;
+    cursorBackwards: string | null;
+    page: MatchRecord[];
+};
 
 const serialiseCursor = (playedAt: number, gameId: number) =>
     `${playedAt}:${gameId}`;
@@ -27,12 +32,6 @@ export const isValidCursor = (cursor: string) => {
     } catch (_) {
         return false;
     }
-};
-
-export type PlayerMatchesPage = {
-    cursorForwards: string | null;
-    cursorBackwards: string | null;
-    page: MatchRecord[];
 };
 
 export default async function getPlayerMatches(
