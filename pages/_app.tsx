@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
+import "styles/index.css";
 
 import { LiveLayout } from "components/live-layout";
 
