@@ -76,8 +76,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     const name = params?.name as string;
     const page = Number(query.page ?? 0);
 
-    if (isNaN(page)) return { notFound: true };
-    if (page < 0) return { notFound: true };
+    if (isNaN(page) || page < 0) return { notFound: true };
 
     const history = await getHistoryByPage(name, page);
 
