@@ -46,7 +46,7 @@ export function LiveGame({ game }: props) {
                 "group"
             )}
         >
-            {game.isResolved ? <DoneIndicator /> : <LiveIndicator />}
+            {game.isResolved ? <ResolvedIndicator /> : <OngoingIndicator />}
             <span
                 className={clsx(
                     "basis-0 grow",
@@ -88,7 +88,7 @@ export function LiveGame({ game }: props) {
     );
 }
 
-const LiveIndicator = () => (
+const OngoingIndicator = () => (
     <FaCircle
         className={clsx(
             "align-middle animate-pulse",
@@ -98,7 +98,7 @@ const LiveIndicator = () => (
     />
 );
 
-const DoneIndicator = () => (
+const ResolvedIndicator = () => (
     <FaCheckCircle
         className={clsx(
             "align-middle",
