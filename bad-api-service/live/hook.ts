@@ -1,5 +1,5 @@
 import useSocketState, { OngoingMatch, ResolvedMatch } from "./socket-state";
-import { useEffect, useState } from "react";
+import { EffectCallback, useEffect, useState } from "react";
 import { watcherUrl } from "utils/env";
 import useSWR from "swr";
 
@@ -24,18 +24,27 @@ export const useLiveState = () => {
     };
 };
 
-export const usePlayerUpdateWatcher = (name: string) => {
-    const [available, setAvailable] = useState(false);
+export const usePlayerWatcher = (
+    name: string,
+    callbacks: {
+        onBeginsGame?: EffectCallback;
+        onResolvesGame?: EffectCallback;
+    }
+) => {
     const { matches } = useLiveState();
 
+    const isOngoing = matches.some(
+        (g) => !g.isResolved && [g.aPlayer, g.bPlayer].includes(name)
+    );
+    const isResolved = matches.some(
+        (g) => g.isResolved && [g.aPlayer, g.bPlayer].includes(name)
+    );
+
     useEffect(() => {
-        const playersWithNewData = new Set(
-            matches.flatMap((g) => (g.isResolved ? [g.aPlayer, g.aPlayer] : []))
-        );
-        if (playersWithNewData.has(name)) setAvailable(true);
-    }, [matches.length]);
+        if (isOngoing) return callbacks.onBeginsGame?.();
+    }, [isOngoing]);
 
-    const clearNotification = () => setAvailable(false);
-
-    return [available, clearNotification] as const;
+    useEffect(() => {
+        if (isResolved) return callbacks.onResolvesGame?.();
+    }, [isResolved]);
 };
