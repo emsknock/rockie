@@ -20,6 +20,7 @@ type State = {
     clearResolvedMatchesByPlayer(name: string): void;
 };
 
+/** Fetches a list of currently ongoing matches from the bad-api-watcher. */
 const getInitialMatches = () =>
     fetch(watcherUrl)
         .then(
@@ -30,6 +31,7 @@ const getInitialMatches = () =>
             (l) => l.filter((game) => !game.isResolved) as StateOngoingMatch[]
         );
 
+/** Keeps track of game events that come from the Bad Api */
 const useSocketState = create<State>((set) => {
     // Hook doesn't need to run server-side
     if (!sock)
