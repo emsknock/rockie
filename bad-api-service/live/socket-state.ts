@@ -17,7 +17,6 @@ type State = {
     watcherError: boolean;
     matches: (StateResolvedMatch | StateOngoingMatch)[];
     clearMatchById(id: number): void;
-    clearResolvedMatchesByPlayer(name: string): void;
 };
 
 /** Fetches a list of currently ongoing matches from the bad-api-watcher. */
@@ -40,7 +39,6 @@ const useSocketState = create<State>((set) => {
             watcherError: false,
             matches: [],
             clearMatchById: () => null,
-            clearResolvedMatchesByPlayer: () => null,
         };
 
     function beginGame(event: ParsedGameBeginEvent) {
