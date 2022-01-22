@@ -28,13 +28,12 @@ export const usePlayerUpdateWatcher = (name: string) => {
     const [available, setAvailable] = useState(false);
     const { matches } = useLiveState();
 
-    const playersWithNewData = new Set(
-        matches.map((g) => (g.isResolved ? [g.aPlayer, g.aPlayer] : [])).flat()
-    );
-
     useEffect(() => {
+        const playersWithNewData = new Set(
+            matches.flatMap((g) => (g.isResolved ? [g.aPlayer, g.aPlayer] : []))
+        );
         if (playersWithNewData.has(name)) setAvailable(true);
-    }, Array.from(playersWithNewData));
+    }, [matches.length]);
 
     const clearNotification = () => setAvailable(false);
 
