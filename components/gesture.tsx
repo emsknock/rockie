@@ -1,12 +1,26 @@
 import { GestureId } from "utils/gestures";
+import {
+    FaHandPaper,
+    FaHandRock,
+    FaHandScissors,
+    FaRegHandPaper,
+    FaRegHandRock,
+    FaRegHandScissors,
+} from "react-icons/fa";
 
-export function Gesture({ id }: { id: GestureId }) {
+export function Gesture({
+    id,
+    fill = true,
+}: {
+    id: GestureId;
+    fill?: boolean;
+}) {
     switch (id) {
         case GestureId.rock:
-            return <>Rock</>;
+            return fill ? <FaHandRock /> : <FaRegHandRock />;
         case GestureId.paper:
-            return <>Paper</>;
+            return fill ? <FaHandPaper /> : <FaRegHandPaper />;
         case GestureId.scissors:
-            return <>Scissors</>;
+            return fill ? <FaHandScissors /> : <FaRegHandScissors />;
     }
 }
