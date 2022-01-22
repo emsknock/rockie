@@ -1,30 +1,23 @@
 import db from "../connection";
-import type { MatchRecord } from "./types";
-import { deserialiseCursor, serialiseCursor } from "utils/history-cursors";
+import { MatchRecord } from "./types";
 
 export type HistoryRecord = {
-    cursorForwards: string | null;
-    cursorBackwards: string | null;
+    prevAvailable: boolean;
+    nextAvailable: boolean;
     page: MatchRecord[];
 };
 
-export default async function getPlayerHistoryByCursor(
+export default async function getPlayerHistoryByPage(
     name: string,
-    cursor?: string,
-    direction: "forwards" | "backwards" = "forwards",
+    page = 0,
     limit = 20
 ): Promise<HistoryRecord> {
-    const isForwards = direction === "forwards";
-    const [cursorTime, cursorId] = cursor
-        ? deserialiseCursor(cursor)
-        : [Date.now(), null];
-
     const selectPlayerId = db
         .selectFrom("players")
         .select("id")
         .where("full_name", "=", name);
 
-    const page = await db
+    const rows = await db
         .selectFrom((subquery) =>
             subquery
                 .selectFrom("unequal_matches")
@@ -63,11 +56,8 @@ export default async function getPlayerHistoryByCursor(
         )
         .orderBy("played_at", "desc")
         .orderBy("normalised_matches.id", "asc")
-        .where("played_at", isForwards ? "<=" : ">=", cursorTime)
-        .if(cursorId !== null, (q) =>
-            q.where("normalised_matches.id", isForwards ? ">" : "<=", cursorId!)
-        )
-        .limit(limit)
+        .limit(limit + 1)
+        .offset(page * limit)
         .leftJoin(
             "players as winner_player",
             "winner_player.id",
@@ -89,16 +79,9 @@ export default async function getPlayerHistoryByCursor(
         ])
         .execute();
 
-    const firstRow = page?.[0];
-    const lastRow = page?.[page.length - 1];
-
     return {
-        page,
-        cursorBackwards: firstRow
-            ? serialiseCursor(firstRow.playedAt, firstRow.id)
-            : null,
-        cursorForwards: lastRow
-            ? serialiseCursor(lastRow.playedAt, lastRow.id)
-            : null,
+        page: rows.slice(0, limit),
+        prevAvailable: page > 0,
+        nextAvailable: rows.length === limit + 1,
     };
 }

@@ -1,16 +1,11 @@
 import db from "../connection";
+import type { StatsRecord } from "./types";
 import { GestureId } from "utils/gestures";
 
-type ResultTypeStats = {
-    count: number;
-    rockCount: number;
-    paperCount: number;
-    scissorsCount: number;
-};
-export type StatsRecord = {
-    tiedMatches: ResultTypeStats;
-    wonMatches: ResultTypeStats;
-    lostMatches: ResultTypeStats;
+export type PlayerStatsRecord = {
+    tiedMatches: StatsRecord;
+    wonMatches: StatsRecord;
+    lostMatches: StatsRecord;
 };
 
 const countByCol = (column: string, value: any) =>
@@ -26,7 +21,7 @@ const statSelectors = (column: string) =>
 
 export default async function getPlayerStats(
     name: string
-): Promise<StatsRecord | null> {
+): Promise<PlayerStatsRecord | null> {
     const selectPlayerId = await db
         .selectFrom("players")
         .select("id")
@@ -37,7 +32,7 @@ export default async function getPlayerStats(
 
     const playerId = selectPlayerId.id;
 
-    return {
+    const statsByMatchType = {
         tiedMatches: await db
             .selectFrom("tied_matches")
             .select(statSelectors("gesture_id"))
@@ -54,5 +49,13 @@ export default async function getPlayerStats(
             .select(statSelectors("loser_gesture_id"))
             .where("loser_player_id", "=", playerId)
             .executeTakeFirstOrThrow(),
+    };
+
+    const tied = statsByMatchType.tiedMatches;
+    const won = statsByMatchType.wonMatches;
+    const lost = statsByMatchType.lostMatches;
+
+    return {
+        ...statsByMatchType,
     };
 }
