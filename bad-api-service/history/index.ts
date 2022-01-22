@@ -6,6 +6,7 @@ export { default as getHistoryByCursor } from "./database/queries/history-cursor
 export { default as getHistoryByPage } from "./database/queries/history-paged";
 export { default as getLastCursor } from "./database/queries/bad-api-cursors";
 export { default as getPlayerStats } from "./database/queries/player-stats";
+export { default as findPlayerNamesLike } from "./database/queries/player-name";
 
 export type { MatchRecord, StatsRecord } from "./database/queries/types";
 export type { PlayerStatsRecord } from "./database/queries/player-stats";
