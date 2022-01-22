@@ -1,18 +1,20 @@
-import type { StatsRecord, MatchRecord } from "bad-api-service/history";
+import type { StatsRecord, PlayerMatchesPage } from "bad-api-service/history";
+import useSocketState from "bad-api-service/live/socket-state";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
-import useSocketState from "bad-api-service/live/socket-state";
 
 export default function Player() {
     const { query } = useRouter();
     const name = query.name as string;
-    const page = Number((query.page as string) ?? 0);
+    const cursor = query.cursor as string | undefined;
 
-    const playerStats = useSWR<StatsRecord>(`/api/player-stats?name=${name}`);
-    const playerHistory = useSWR<MatchRecord[]>(
-        `/api/player-matches?name=${name}`
+    const stats = useSWR<StatsRecord>(`/api/${name}/stats`);
+    const history = useSWR<PlayerMatchesPage>(
+        cursor
+            ? `/api/${name}/history?cursor=${cursor}`
+            : `/api/${name}/history`
     );
 
     const liveMatches = useSocketState((s) => s.matches);
@@ -25,13 +27,13 @@ export default function Player() {
             (match) =>
                 match.isResolved &&
                 (match.aPlayer === name || match.bPlayer === name) &&
-                !playerHistory.data?.map((g) => g.id).includes(match.id)
+                !history.data?.page.map((g) => g.id).includes(match.id)
         );
         if (newResolvedMatchExists) setNewDataAvailable(true);
-    }, [liveMatches.map((game) => game.id), name, page]);
+    }, [liveMatches.map((game) => game.id), name, cursor]);
 
     useEffect(
-        () => void (isNewDataAvailbale && playerStats.mutate()),
+        () => void (isNewDataAvailbale && stats.mutate()),
         [isNewDataAvailbale]
     );
 
@@ -40,25 +42,28 @@ export default function Player() {
     return (
         <>
             <h1>{name}</h1>
-            <p>{playerStats.data?.wonMatches.count}</p>
+            <p>{stats.data?.wonMatches.count}</p>
             {isNewDataAvailbale && (
                 <p>
-                    <button onClick={() => playerHistory.mutate()}>
+                    <button onClick={() => history.mutate()}>
                         New data available — click to update
                     </button>
                 </p>
             )}
             <nav>
-                <Link href={`/player/${name}?page=${page - 1}`}>
-                    <a>Prev ({page - 1})</a>
+                <Link
+                    href={`/player/${name}/?cursor=${history.data?.cursorBackwards}`}
+                >
+                    <a>Prev</a>
                 </Link>{" "}
-                Page {page}{" "}
-                <Link href={`/player/${name}?page=${page + 1}`}>
-                    <a>Next {page + 1}</a>
+                <Link
+                    href={`/player/${name}/?cursor=${history.data?.cursorForwards}`}
+                >
+                    <a>Next</a>
                 </Link>
             </nav>
             <ul>
-                {playerHistory.data?.map((match) => (
+                {history.data?.page.map((match) => (
                     <li key={match.id}>{match.id}</li>
                 ))}
             </ul>
