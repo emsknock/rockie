@@ -125,10 +125,10 @@ export default async function getPlayerMatches(
 
     return {
         page,
-        cursorForwards: firstRow
+        cursorBackwards: firstRow
             ? serialiseCursor(firstRow.playedAt, firstRow.id)
             : null,
-        cursorBackwards: lastRow
+        cursorForwards: lastRow
             ? serialiseCursor(lastRow.playedAt, lastRow.id)
             : null,
     };
