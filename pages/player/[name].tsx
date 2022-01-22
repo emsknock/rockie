@@ -18,7 +18,6 @@ type props = {
 
 export default function Player({ name, page, history }: props) {
     const stats = useSWR<PlayerStatsRecord>(`/api/${name}/stats`);
-
     return (
         <>
             <h1>{name}</h1>
