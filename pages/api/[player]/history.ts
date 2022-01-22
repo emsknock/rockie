@@ -16,7 +16,7 @@ export default async function handler(
     const page = Number(req.query.page ?? 0);
     const cursor = req.query.cursor as string | undefined;
 
-    if (isNaN(page)) return res.status(400).send("Invalid page");
+    if (isNaN(page) || page < 0) return res.status(400).send("Invalid page");
     if (cursor && !isValidCursor(cursor))
         return res.status(400).send("Invalid cursor");
 
