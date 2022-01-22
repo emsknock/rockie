@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-    getPlayerMatches,
-    MatchRecord,
-} from "bad-api-service/history/database/queries/player-matches";
+import { getPlayerMatches, MatchRecord } from "bad-api-service/history";
 import { refreshDatabase } from "bad-api-service/history";
 
 export default async function handler(
@@ -11,14 +8,16 @@ export default async function handler(
 ) {
     await refreshDatabase();
 
-    const page = Number(req.query.page ?? 0);
-    const name = req.query.name;
-    if (isNaN(page)) return res.status(400).send("Page must be a number");
+    const rawCursor = req.query.cursor as string | undefined;
+    const name = req.query.name as string | undefined;
     if (typeof name !== "string")
         return res.status(400).send("Player name must be a string");
 
-    const matches = await getPlayerMatches(name, page);
-    return matches === null
-        ? res.status(404).send("No such player")
-        : res.json(matches);
+    const [playedAtStr, matchIdStr] = rawCursor?.split(":") ?? [null, null];
+    const playedAt = playedAtStr ? Number(playedAtStr) : Date.now();
+    const matchId = matchIdStr ? Number(matchIdStr) : null;
+
+    const { page } = await getPlayerMatches(name, [playedAt, matchId]);
+
+    return res.json(page);
 }
