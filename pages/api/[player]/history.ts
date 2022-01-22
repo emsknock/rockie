@@ -1,17 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { refreshDatabase, getPlayerMatches } from "bad-api-service/history";
-import {
-    isValidCursor,
-    PlayerMatchesPage,
-} from "bad-api-service/history/database/queries/player-matches";
-import useSWR from "swr";
-
-export const usePlayerHistory = (name: string, cursor?: string) =>
-    useSWR<PlayerMatchesPage>(
-        cursor
-            ? `/api/${name}/history?cursor=${cursor}`
-            : `/api/${name}/history`
-    );
+import { isValidCursor } from "bad-api-service/history";
 
 export default async function handler(
     req: NextApiRequest,
