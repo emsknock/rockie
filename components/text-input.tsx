@@ -15,7 +15,8 @@ export const TextInput: FC<{
                 className={clsx(
                     "pl-10 pr-4 py-2 w-96",
                     "rounded-full",
-                    "border"
+                    "bg-white dark:bg-gray-800",
+                    "border border-gray-200 dark:border-gray-700"
                 )}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}

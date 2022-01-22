@@ -16,7 +16,11 @@ export const LiveLayout: FC = ({ children }) => {
         >
             <div className={clsx("grow px-2")}>{children}</div>
             <div className={clsx("py-2", "sticky top-0 self-start")}>
-                <div className={clsx("sticky top-0 bg-white z-10")}>
+                <div
+                    className={clsx(
+                        "sticky top-0 bg-white dark:bg-gray-900 z-10"
+                    )}
+                >
                     <h1 className="h-10 text-2xl text-center">Live Games</h1>
                 </div>
                 <ul className={clsx("flex flex-col gap-2", "w-96")}>

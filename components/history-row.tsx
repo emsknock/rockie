@@ -13,7 +13,8 @@ const groupHoverUp =
     "translate-y-2 group-hover:translate-y-0 transition-transform";
 const groupHoverOpacity =
     "opacity-0 group-hover:opacity-100 transition-opacity";
-const winnerText = "text-black font-bold";
+const winnerText = "text-black dark:text-white font-bold";
+const loserText = "text-900 dark:text-gray-300";
 
 export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
     game: { winnerName, loserName, matchType, playedAt, winnerHand, loserHand },
@@ -33,7 +34,8 @@ export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
             className={`
                 grid grid-cols-[1fr_2rem_1fr] grid-rows-[1fr_1rem]
                 px-3 py-2
-                bg-gray-100
+                bg-gray-100 dark:bg-gray-800
+                border-gray-200 dark:border-gray-700
                 group
             `}
         >
@@ -42,7 +44,7 @@ export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
                     "col-span-1 text-right",
                     "flex gap-2 justify-end items-center",
                     "align-bottom",
-                    !isTie && ownWin && winnerText,
+                    !isTie && ownWin ? winnerText : loserText,
                     groupHoverUp
                 )}
             >
@@ -63,7 +65,7 @@ export const HistoryRow: FC<{ game: MatchRecord; player: string }> = ({
                     "col-span-1 text-left",
                     "flex gap-2 justify-start items-center",
                     "align-bottom",
-                    !isTie && !ownWin && winnerText,
+                    !isTie && !ownWin ? winnerText : loserText,
                     groupHoverUp
                 )}
             >

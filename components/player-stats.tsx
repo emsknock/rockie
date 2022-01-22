@@ -65,7 +65,15 @@ const StatContainer: FC<{ title: string; component: ReactElement | false }> = ({
             {title}
         </div>
         {component}
-        {!component && <div className="w-full h-9 bg-gray-200 animate-pulse" />}
+        {!component && (
+            <div
+                className={clsx(
+                    "w-full h-9",
+                    "rounded",
+                    "bg-gray-200 dark:bg-gray-700 animate-pulse"
+                )}
+            />
+        )}
     </div>
 );
 
