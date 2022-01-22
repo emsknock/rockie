@@ -3,6 +3,7 @@ import type { StatsRecord } from "./types";
 import { GestureId } from "utils/gestures";
 
 export type PlayerStatsRecord = {
+    overall: StatsRecord;
     tiedMatches: StatsRecord;
     wonMatches: StatsRecord;
     lostMatches: StatsRecord;
@@ -57,5 +58,12 @@ export default async function getPlayerStats(
 
     return {
         ...statsByMatchType,
+        overall: {
+            count: tied.count + won.count + lost.count,
+            rockCount: tied.rockCount + won.rockCount + lost.rockCount,
+            paperCount: tied.paperCount + won.paperCount + lost.paperCount,
+            scissorsCount:
+                tied.scissorsCount + won.scissorsCount + lost.scissorsCount,
+        },
     };
 }
