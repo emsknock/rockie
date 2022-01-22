@@ -17,7 +17,7 @@ export type PlayerMatchesPage = {
     page: MatchRecord[];
 };
 
-export default async function getPlayerMatches(
+export default async function getPlayerHistoryByCursor(
     name: string,
     cursor?: string,
     direction: "forwards" | "backwards" = "forwards",
