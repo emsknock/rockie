@@ -21,6 +21,7 @@ const db =
     new Kysely<RpsDatabase>({
         dialect: new PostgresDialect({
             connectionString: postgresUrl,
+            ssl: !isDev && { rejectUnauthorized: false },
         }),
     });
 
