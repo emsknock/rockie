@@ -35,13 +35,15 @@ const Home: NextPage = () => {
                         {"Here's"} Rockie — my Reaktor 2022 Summer Developer
                         pre-assignment project. I wrote it with a very
                         constrained schedule, and decided to focus my time and
-                        energy more on learning something new (i.e. database
+                        energy more on learning something new (e.g. database
                         stuff) than on the parts {"I'm"} more at home with (i.e.
-                        frontend stuff). I wanted to make some nice little
-                        animations and microinteractions with e.g. Framer Motion
-                        but ended up learning a ton about the keyset pagination
-                        (I left some code related to it in the repo, even though{" "}
-                        {"it's"} unused) and database management!
+                        frontend stuff) — I wanted to make a really polished and
+                        well organised UI with some nice little animations and
+                        microinteractions with e.g. Framer Motion but ended up
+                        learning a ton about things like keyset pagination (I
+                        left some code related to it in the repo, even though{" "}
+                        {"it's"} unused), synchronisation problems, and database
+                        management!
                     </p>
                     <p className="my-2">
                         So, whoever is reading this, hope {"you'll"} like my
