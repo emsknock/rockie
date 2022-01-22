@@ -8,5 +8,6 @@ export { default as getLastCursor } from "./database/queries/bad-api-cursors";
 export { default as getPlayerStats } from "./database/queries/player-stats";
 
 export type { MatchRecord, StatsRecord } from "./database/queries/types";
+export type { PlayerStatsRecord } from "./database/queries/player-stats";
 export type { HistoryRecord as HistoryRecordByCursor } from "./database/queries/history-cursor";
 export type { HistoryRecord as HistoryRecordByPage } from "./database/queries/history-paged";
