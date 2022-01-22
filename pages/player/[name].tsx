@@ -13,7 +13,7 @@ export default function Player() {
 
     const playerStats = useSWR<StatsRecord>(`/api/player-stats?name=${name}`);
     const playerHistory = useSWR<MatchRecord[]>(
-        `/api/player-matches?name=${name}&page=${page}`
+        `/api/player-matches?name=${name}`
     );
 
     const liveMatches = useSocketState((s) => s.matches);
