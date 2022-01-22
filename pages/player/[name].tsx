@@ -1,11 +1,12 @@
-import type {
-    PlayerStatsRecord,
-    HistoryRecordByPage,
-} from "bad-api-service/history";
 import type { GetServerSideProps } from "next";
+import type { HistoryRecordByPage } from "bad-api-service/history";
+
+import clsx from "clsx";
 import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
-import Link from "next/link";
-import useSWR from "swr";
+
+import { HistoryRow } from "components/history-row";
+import { PaginationNav } from "components/pagination-nav";
+import { PlayerStats } from "components/player-stats";
 
 type props = {
     name: string;
@@ -14,29 +15,36 @@ type props = {
 };
 
 export default function Player({ name, page, history }: props) {
-    const stats = useSWR<PlayerStatsRecord>(`/api/${name}/stats`);
     return (
         <>
-            <h1>{name}</h1>
-            <p>{page}</p>
-            <p>{stats.data?.overall.count}</p>
-            <nav>
-                <Link href={`/player/${name}/?page=${page - 1}`}>
-                    <a>Prev</a>
-                </Link>{" "}
-                <Link href={`/player/${name}/?page=${page + 1}`}>
-                    <a>Next</a>
-                </Link>
-            </nav>
-            <ul>
-                {history.page.map((match) => (
-                    <li key={match.id}>
-                        {new Date(match.playedAt).toLocaleTimeString()}{" "}
-                        {match.playedAt} {match.id} {match.winnerName}{" "}
-                        {match.loserName}
-                    </li>
+            <h1
+                className={clsx(
+                    "h-12 mt-32",
+                    "font-semibold text-5xl",
+                    "sticky top-0",
+                    "bg-white z-10"
+                )}
+            >
+                {name}
+            </h1>
+            <PlayerStats name={name} />
+            <ul
+                className={clsx(
+                    "my-2",
+                    "divide-y border border-gray-200 dark:border-gray-700",
+                    "rounded overflow-hidden"
+                )}
+            >
+                {history.page.map((game) => (
+                    <HistoryRow key={game.id} game={game} player={name} />
                 ))}
             </ul>
+            <PaginationNav
+                page={page}
+                name={name}
+                canGoPrev={history.prevAvailable}
+                canGoNext={history.nextAvailable}
+            />
         </>
     );
 }
