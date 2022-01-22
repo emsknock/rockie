@@ -1,21 +1,6 @@
+import type { ParsedGameBeginEvent, ParsedGameResultEvent } from "./types";
 import { GestureId } from "utils/gestures";
 import { gameIdNormaliser } from "utils/game-ids";
-
-export type ParsedGameBeginEvent = {
-    type: "GAME_BEGIN";
-    id: number;
-    aPlayer: string;
-    bPlayer: string;
-};
-export type ParsedGameResultEvent = {
-    type: "GAME_RESULT";
-    id: number;
-    t: number;
-    aPlayer: string;
-    bPlayer: string;
-    aGesture: GestureId;
-    bGesture: GestureId;
-};
 
 export async function parseApiMessage(
     data: any

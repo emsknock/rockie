@@ -1,44 +1,34 @@
+import type {
+    ParsedGameBeginEvent,
+    ParsedGameResultEvent,
+    StateOngoingMatch,
+    StateResolvedMatch,
+} from "./types";
+
 import create from "zustand";
 import produce from "immer";
 import sock from "./socket";
-import { GestureId } from "utils/gestures";
 import { watcherUrl } from "utils/env";
-import { gameResult, GameResult } from "utils/game-result";
-import {
-    parseApiMessage,
-    ParsedGameResultEvent,
-    ParsedGameBeginEvent,
-} from "./api-events";
+import { gameResult } from "utils/game-result";
+import { parseApiMessage } from "./api-events";
 
-export type ResolvedMatch = {
-    isResolved: true;
-    id: number;
-    playedAt: number;
-    aPlayer: string;
-    bPlayer: string;
-    result: GameResult;
-    aGesture: GestureId;
-    bGesture: GestureId;
-};
-export type OngoingMatch = {
-    isResolved: false;
-    id: number;
-    startedAt: number;
-    aPlayer: string;
-    bPlayer: string;
-};
-export type State = {
+type State = {
     connected: boolean;
     watcherError: boolean;
-    matches: (ResolvedMatch | OngoingMatch)[];
+    matches: (StateResolvedMatch | StateOngoingMatch)[];
     clearMatchById(id: number): void;
     clearResolvedMatchesByPlayer(name: string): void;
 };
 
 const getInitialMatches = () =>
     fetch(watcherUrl)
-        .then((r) => r.json() as Promise<(OngoingMatch | ResolvedMatch)[]>)
-        .then((l) => l.filter((game) => !game.isResolved) as OngoingMatch[]);
+        .then(
+            (r) =>
+                r.json() as Promise<(StateOngoingMatch | StateResolvedMatch)[]>
+        )
+        .then(
+            (l) => l.filter((game) => !game.isResolved) as StateOngoingMatch[]
+        );
 
 const useSocketState = create<State>((set) => {
     // Hook doesn't need to run server-side
