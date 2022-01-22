@@ -1,14 +1,14 @@
-import type { GetServerSideProps } from "next";
 import type {
     PlayerStatsRecord,
     HistoryRecordByPage,
 } from "bad-api-service/history";
+import type { GetServerSideProps } from "next";
 
-import useSocketState from "bad-api-service/live/socket-state";
-import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
+import { usePlayerWatcher } from "bad-api-service/live/hook";
+import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
 
 type props = {
     name: string;
@@ -19,33 +19,27 @@ type props = {
 export default function Player({ name, page, history }: props) {
     const stats = useSWR<PlayerStatsRecord>(`/api/${name}/stats`);
 
-    const liveMatches = useSocketState((s) => s.matches);
-    const [isNewDataAvailbale, setNewDataAvailable] = useState(false);
-    useEffect(() => {
-        // Is there a resolved match where
-        // * this player was a participant and
-        // * it isn't included on this page already
-        const newResolvedMatchExists = liveMatches.some(
-            (match) =>
-                match.isResolved &&
-                (match.aPlayer === name || match.bPlayer === name) &&
-                !history.page.map((g) => g.id).includes(match.id)
-        );
-        if (newResolvedMatchExists) setNewDataAvailable(true);
-    }, [liveMatches.map((game) => game.id), name]);
-
-    useEffect(
-        () => void (isNewDataAvailbale && stats.mutate()),
-        [isNewDataAvailbale]
-    );
-
-    useEffect(() => void setNewDataAvailable(false), [name]);
+    const [updatesAvailable, setUpdatesAvailable] = useState(false);
+    useEffect(() => setUpdatesAvailable(false), [name]);
+    usePlayerWatcher(name, {
+        onResolvesGame: () => {
+            setUpdatesAvailable(true);
+            stats.mutate();
+        },
+    });
 
     return (
         <>
             <h1>{name}</h1>
             <p>{page}</p>
-            <p>{stats.data?.wonMatches.count}</p>
+            <p>{stats.data?.overall.count}</p>
+            {updatesAvailable && (
+                <p>
+                    <Link href={`/player/${name}?page=0`}>
+                        <a>New data available</a>
+                    </Link>
+                </p>
+            )}
             <nav>
                 <Link href={`/player/${name}/?page=${page - 1}`}>
                     <a>Prev</a>
