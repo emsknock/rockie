@@ -1,6 +1,6 @@
 import type { StateResolvedMatch, StateOngoingMatch } from "./types";
 import useSocketState from "./socket-state";
-import { EffectCallback, useEffect, useState } from "react";
+import { EffectCallback, useEffect } from "react";
 import { watcherUrl } from "utils/env";
 import useSWR from "swr";
 
