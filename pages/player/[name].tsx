@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
     await refreshDatabase();
 
-    const name = params?.name as string;
+    const name = params!.name as string;
     const page = Number(query.page ?? 0);
 
     if (isNaN(page) || page < 0) return { notFound: true };
