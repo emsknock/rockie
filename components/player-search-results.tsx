@@ -1,6 +1,7 @@
+import type { FC } from "react";
 import Link from "next/link";
-import { FC } from "react";
 import useSWR from "swr";
+import clsx from "clsx";
 
 export const PlayerSearchResults: FC<{ prefix: string }> = ({ prefix }) => {
     const { data } = useSWR<string[]>(`/api/find-names?name=${prefix}`);
@@ -10,12 +11,10 @@ export const PlayerSearchResults: FC<{ prefix: string }> = ({ prefix }) => {
                 <li key={name} className="m-2">
                     <Link href={`/player/${name}`}>
                         <a
-                            className={`
-                                px-3 py-2
-                                rounded-full
-                                transition-colors duration-75
-                                hover:bg-blue-100
-                            `}
+                            className={clsx(
+                                "px-3 py-2",
+                                "font-bold text-blue-500"
+                            )}
                         >
                             {name}
                         </a>
