@@ -19,27 +19,11 @@ type props = {
 export default function Player({ name, page, history }: props) {
     const stats = useSWR<PlayerStatsRecord>(`/api/${name}/stats`);
 
-    const [updatesAvailable, setUpdatesAvailable] = useState(false);
-    useEffect(() => setUpdatesAvailable(false), [name]);
-    usePlayerWatcher(name, {
-        onResolvesGame: () => {
-            setUpdatesAvailable(true);
-            stats.mutate();
-        },
-    });
-
     return (
         <>
             <h1>{name}</h1>
             <p>{page}</p>
             <p>{stats.data?.overall.count}</p>
-            {updatesAvailable && (
-                <p>
-                    <Link href={`/player/${name}?page=0`}>
-                        <a>New data available</a>
-                    </Link>
-                </p>
-            )}
             <nav>
                 <Link href={`/player/${name}/?page=${page - 1}`}>
                     <a>Prev</a>
