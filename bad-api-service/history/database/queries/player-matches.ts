@@ -11,17 +11,38 @@ export type MatchRecord = {
     matchType: "tied" | "unequal";
 };
 
+const serialiseCursor = (playedAt: number, gameId: number) =>
+    `${playedAt}:${gameId}`;
+const deserialiseCursor = (cursor: string) => {
+    const [l, r] = cursor.split(":");
+    const playedAt = Number(l);
+    const gameId = Number(r);
+    if (isNaN(playedAt) || isNaN(gameId)) throw Error("Invalid cursor");
+    return [Number(l), Number(r)];
+};
+export const isValidCursor = (cursor: string) => {
+    try {
+        deserialiseCursor(cursor);
+        return true;
+    } catch (_) {
+        return false;
+    }
+};
+
 export default async function getPlayerMatches(
     name: string,
-    [cursorTime, cursorId]: readonly [number, number | null],
+    cursor?: string,
     direction: "forwards" | "backwards" = "forwards",
     limit = 50
 ): Promise<{
-    startCursor: [number, number];
-    endCursor: [number, number];
+    cursorForwards: string | null;
+    cursorBackwards: string | null;
     page: MatchRecord[];
 }> {
     const isForwards = direction === "forwards";
+    const [cursorTime, cursorId] = cursor
+        ? deserialiseCursor(cursor)
+        : [Date.now(), null];
 
     const selectPlayerId = db
         .selectFrom("players")
@@ -95,7 +116,11 @@ export default async function getPlayerMatches(
 
     return {
         page,
-        startCursor: firstRow ? [firstRow.playedAt, firstRow.id] : [0, 0],
-        endCursor: lastRow ? [lastRow.id, lastRow.id] : [0, 0],
+        cursorForwards: firstRow
+            ? serialiseCursor(firstRow.playedAt, firstRow.id)
+            : null,
+        cursorBackwards: lastRow
+            ? serialiseCursor(lastRow.playedAt, lastRow.id)
+            : null,
     };
 }
