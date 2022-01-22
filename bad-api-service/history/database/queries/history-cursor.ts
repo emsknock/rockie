@@ -8,6 +8,7 @@ export type HistoryRecord = {
     page: MatchRecord[];
 };
 
+/** Returns a keyset-paginated list of the matches a given player has taken part in */
 export default async function getPlayerHistoryByCursor(
     name: string,
     cursor?: string,

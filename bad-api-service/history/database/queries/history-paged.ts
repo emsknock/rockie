@@ -7,6 +7,7 @@ export type HistoryRecord = {
     page: MatchRecord[];
 };
 
+/** Returns a paginated list of the matches a given player has taken part in */
 export default async function getPlayerHistoryByPage(
     name: string,
     page = 0,

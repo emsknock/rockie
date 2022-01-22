@@ -1,3 +1,10 @@
+/**
+ * When updating our database with fresh data from Bad Api, we simply insert
+ * each new row into this staging table. The trigger function that watches
+ * this table will automatically normalise the data for us, and we simply need
+ * to truncate the staging table every now and then (or, preferably, after
+ * each new insertion so the trigger doesn't run on already processed rows)
+ */
 CREATE TABLE staging_matches (
     id                  INTEGER PRIMARY KEY,
     played_at           BIGINT,

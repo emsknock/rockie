@@ -3,11 +3,10 @@ import { Kysely, PostgresDialect } from "kysely";
 import { postgresUrl } from "utils/env";
 import { RpsDatabase } from "./schema";
 
-// TODO: Refactor or annotate this to be more understandable
+// Set pg to parse the results of e.g. COUNT functions as numbers.
+// This comes with the risk of the db giving too big a number for js to
+// handle, but with this given assignment, I can't see that happening.
 pg.defaults.parseInt8 = true;
-pg.types.setTypeParser(pg.types.builtins.TIMESTAMP, (value) =>
-    Number(new Date(`${value}+0000`))
-);
 
 const isDev = process.env.NODE_ENV === "development";
 

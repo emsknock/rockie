@@ -20,6 +20,13 @@ const statSelectors = (column: string) =>
         countByCol(column, GestureId.scissors).as("scissorsCount"),
     ] as const;
 
+/**
+ * Determines gesture statistics for a given player separated by match outcome
+ *
+ * Counts the times a player has lost, won, or tied, and for each outcome,
+ * which gestures the player has played. Also computes the sum of all three
+ * into `overall` statistics.
+ */
 export default async function getPlayerStats(
     name: string
 ): Promise<PlayerStatsRecord | null> {

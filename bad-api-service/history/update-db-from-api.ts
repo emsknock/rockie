@@ -3,6 +3,7 @@ import { fetchUntilCursor } from "./fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
 
+/** Automatically fetches all *new* data from Bad Api and pushes it into the database */
 export default async function updateDatabaseFromBadApi() {
     const normalise = await gameIdNormaliser;
     const lastCursor = await getLastCursor();

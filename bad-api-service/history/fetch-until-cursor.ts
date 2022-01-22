@@ -1,5 +1,14 @@
 import { historyUrl } from "utils/env";
 
+/**
+ * Traverses the Bad Api's pages, starting from the current first page and
+ * yielding each encountered page and cursor.
+ *
+ * The Bad Api's first page is always volatile, but all pages that have been
+ * assigned cursors seem stable and the path of cursors seems to always be the
+ * same, so it's safe to fetch pages from the Api until we see a cursor we've
+ * encountered before and stop there.
+ */
 export async function* fetchUntilCursor(targetCursor: string | null) {
     type ApiPage = {
         cursor: string | null;

@@ -1,5 +1,6 @@
 import db from "../connection";
 
+/** Finds all players in the database whose names begin with `prefix` */
 export default async function findPlayerNamesLike(
     prefix: string
 ): Promise<string[]> {
