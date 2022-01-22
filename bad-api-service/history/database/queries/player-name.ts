@@ -6,7 +6,7 @@ export default async function findPlayerNamesLike(
     const results = await db
         .selectFrom("players")
         .select("full_name as fullName")
-        .where(db.raw("full_name ilike '?%'", [prefix]))
+        .where("full_name", "ilike", `${prefix}%`)
         .orderBy("full_name", "asc")
         .execute();
     return results.map((r) => r.fullName);
