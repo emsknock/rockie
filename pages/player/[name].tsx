@@ -3,12 +3,9 @@ import type {
     HistoryRecordByPage,
 } from "bad-api-service/history";
 import type { GetServerSideProps } from "next";
-
+import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
 import Link from "next/link";
 import useSWR from "swr";
-import { useEffect, useState } from "react";
-import { usePlayerWatcher } from "bad-api-service/live/hook";
-import { refreshDatabase, getHistoryByPage } from "bad-api-service/history";
 
 type props = {
     name: string;
