@@ -2,11 +2,13 @@ import { FC, ReactElement } from "react";
 import clsx from "clsx";
 import useSWR from "swr";
 import { PlayerStatsRecord } from "bad-api-service/history";
-import { Gesture } from "./gesture";
 import { GestureId } from "utils/gestures";
+import { Gesture } from "./gesture";
 
 export const PlayerStats: FC<{ name: string }> = ({ name }) => {
-    const { data } = useSWR<PlayerStatsRecord>(`/api/${name}/stats`, {});
+    const { data } = useSWR<PlayerStatsRecord>(`/api/${name}/stats`, {
+        refreshInterval: 100,
+    });
     const totalGames = data ? data.overall.count : null;
     const winRatio = data ? data.wonMatches.count / data.overall.count : null;
 
