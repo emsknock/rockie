@@ -17,6 +17,12 @@ export default async function handler(
     const cursor = req.query.cursor as string | undefined;
 
     if (isNaN(page) || page < 0) return res.status(400).send("Invalid page");
+
+    /**
+     * The app doesn't use cursor pased pagination, but I decided to leave the
+     * code for it here on display and possibly for later reference if I want
+     * to look deeper into it as some point
+     */
     if (cursor && !isValidCursor(cursor))
         return res.status(400).send("Invalid cursor");
 

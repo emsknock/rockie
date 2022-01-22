@@ -1,3 +1,7 @@
+// The app doesn't use cursor pased pagination, but I decided to leave the
+// code for it here on display and possibly for later reference if I want
+// to look deeper into it as some point
+
 export const serialiseCursor = (playedAt: number, gameId: number) =>
     `${playedAt}:${gameId}`;
 
