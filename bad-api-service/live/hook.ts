@@ -47,4 +47,6 @@ export const usePlayerWatcher = (
     useEffect(() => {
         if (isResolved) return callbacks.onResolvesGame?.();
     }, [isResolved]);
+
+    return { isOngoing, isResolved };
 };
