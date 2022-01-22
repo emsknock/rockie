@@ -1,4 +1,4 @@
-import db, { getLastCursor } from "./database";
+import db, { getLastCursor } from ".";
 import { fetchUntilCursor } from "./fetch-until-cursor";
 import { gameIdNormaliser } from "utils/game-ids";
 import { GestureId } from "utils/gestures";
