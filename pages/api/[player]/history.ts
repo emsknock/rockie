@@ -6,11 +6,11 @@ import {
 } from "bad-api-service/history/database/queries/player-matches";
 import useSWR from "swr";
 
-export const usePlayerMatches = (name: string, cursor?: string) =>
+export const usePlayerHistory = (name: string, cursor?: string) =>
     useSWR<PlayerMatchesPage>(
         cursor
-            ? `/api/${name}/matches?cursor=${cursor}`
-            : `/api/${name}/matches`
+            ? `/api/${name}/history?cursor=${cursor}`
+            : `/api/${name}/history`
     );
 
 export default async function handler(
