@@ -13,7 +13,7 @@ export type MatchRecord = {
 
 export default async function getPlayerMatches(
     name: string,
-    [cursorTime = Date.now(), cursorId = null]: [number, number | null],
+    [cursorTime, cursorId]: readonly [number, number | null],
     direction: "forwards" | "backwards" = "forwards",
     limit = 50
 ): Promise<{
