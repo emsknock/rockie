@@ -82,15 +82,14 @@ export default async function getPlayerMatches(
                 )
                 .as("normalised_matches")
         )
-        .where("normalised_matches.winner_player_id", "=", selectPlayerId)
-        .orWhere("normalised_matches.loser_player_id", "=", selectPlayerId)
-        .orderBy("normalised_matches.played_at", "desc")
-        .orderBy("normalised_matches.id", "asc")
-        .where(
-            "normalised_matches.played_at",
-            isForwards ? "<=" : ">=",
-            cursorTime
+        .where((expr) =>
+            expr
+                .where("winner_player_id", "=", selectPlayerId)
+                .orWhere("loser_player_id", "=", selectPlayerId)
         )
+        .orderBy("played_at", "desc")
+        .orderBy("normalised_matches.id", "asc")
+        .where("played_at", isForwards ? "<=" : ">=", cursorTime)
         .if(cursorId !== null, (q) =>
             q.orWhere(
                 "normalised_matches.id",
