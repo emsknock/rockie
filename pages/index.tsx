@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { useState } from "react";
+import clsx from "clsx";
 
 import { PlayerSearchResults } from "components/player-search-results";
 import { TextInput } from "components/text-input";
@@ -10,14 +11,14 @@ const Home: NextPage = () => {
     return (
         <>
             <div
-                className={`
-                    sticky top-0
-                    h-32
-                    w-full
-                    flex justify-center items-center
-                    bg-white
-                    border-b
-                `}
+                className={clsx(
+                    "sticky top-0",
+                    "h-32",
+                    "w-full",
+                    "flex justify-center items-center",
+                    "bg-white",
+                    "border-b"
+                )}
             >
                 <TextInput
                     value={name}
@@ -25,14 +26,31 @@ const Home: NextPage = () => {
                     icon={<FaSearch />}
                 />
             </div>
-            <ol
-                className={`
-                    p-2
-                    flex flex-wrap gap-2 justify-center
-                `}
-            >
+            {name !== "" ? (
                 <PlayerSearchResults prefix={name} />
-            </ol>
+            ) : (
+                <div className={clsx("max-w-md mx-auto my-4")}>
+                    <h1 className={clsx("mb-4", "text-3xl")}>Hello!</h1>
+                    <p className="my-2">
+                        {"Here's"} Rockie — my Reaktor 2022 Summer Developer
+                        pre-assignment project. I wrote it with a very
+                        constrained schedule, and decided to focus my time and
+                        energy more on learning something new (i.e. database
+                        stuff) than on the parts {"I'm"} more at home with (i.e.
+                        frontend stuff). I wanted to make some nice little
+                        animations and microinteractions with e.g. Framer Motion
+                        but ended up learning a ton about the keyset pagination
+                        (I left some code related to it in the repo, even though{" "}
+                        {"it's"} unused) and database management!
+                    </p>
+                    <p className="my-2">
+                        So, whoever is reading this, hope {"you'll"} like my
+                        little code-contraption and hope I can call you{" "}
+                        <q>colleague</q> in the summer 🤞🏻
+                    </p>
+                    <p className="my-2">~ Emma</p>
+                </div>
+            )}
         </>
     );
 };
