@@ -90,12 +90,12 @@ export default async function getPlayerMatches(
         ])
         .execute();
 
-    const firstRow = page[0];
-    const lastRow = page[page.length - 1];
+    const firstRow = page?.[0];
+    const lastRow = page?.[page.length - 1];
 
     return {
         page,
-        startCursor: [firstRow.playedAt, firstRow.id],
-        endCursor: [lastRow.id, lastRow.id],
+        startCursor: firstRow ? [firstRow.playedAt, firstRow.id] : [0, 0],
+        endCursor: lastRow ? [lastRow.id, lastRow.id] : [0, 0],
     };
 }
