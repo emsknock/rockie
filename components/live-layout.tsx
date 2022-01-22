@@ -9,7 +9,10 @@ export const LiveLayout: FC = ({ children }) => {
 
     return (
         <div
-            className={clsx("max-w-5xl mx-auto", "flex gap-8 justify-between")}
+            className={clsx(
+                "max-w-5xl mx-auto px-2",
+                "flex gap-8 justify-between"
+            )}
         >
             <div className={clsx("grow px-2")}>{children}</div>
             <div className={clsx("py-2", "sticky top-0 self-start")}>
