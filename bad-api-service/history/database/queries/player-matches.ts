@@ -91,11 +91,7 @@ export default async function getPlayerMatches(
         .orderBy("normalised_matches.id", "asc")
         .where("played_at", isForwards ? "<=" : ">=", cursorTime)
         .if(cursorId !== null, (q) =>
-            q.orWhere(
-                "normalised_matches.id",
-                isForwards ? ">" : "<=",
-                cursorId!
-            )
+            q.where("normalised_matches.id", isForwards ? ">" : "<=", cursorId!)
         )
         .limit(limit)
         .leftJoin(
