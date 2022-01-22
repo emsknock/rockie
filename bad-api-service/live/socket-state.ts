@@ -2,13 +2,13 @@ import create from "zustand";
 import produce from "immer";
 import sock from "./socket";
 import { GestureId } from "utils/gestures";
+import { watcherUrl } from "utils/env";
 import { gameResult, GameResult } from "utils/game-result";
 import {
     parseApiMessage,
     ParsedGameResultEvent,
     ParsedGameBeginEvent,
 } from "./api-events";
-import { watcherUrl } from "utils/env";
 
 export type ResolvedMatch = {
     isResolved: true;
