@@ -1,11 +1,12 @@
-import useSocketState, { OngoingMatch, ResolvedMatch } from "./socket-state";
+import type { StateResolvedMatch, StateOngoingMatch } from "./types";
+import useSocketState from "./socket-state";
 import { EffectCallback, useEffect, useState } from "react";
 import { watcherUrl } from "utils/env";
 import useSWR from "swr";
 
 export const useLiveState = () => {
     const socket = useSocketState();
-    const fallback = useSWR<(ResolvedMatch | OngoingMatch)[]>(
+    const fallback = useSWR<(StateResolvedMatch | StateOngoingMatch)[]>(
         !socket.connected && watcherUrl,
         { refreshInterval: 5000 }
     );
