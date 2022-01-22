@@ -38,7 +38,7 @@ export default async function getPlayerMatches(
     name: string,
     cursor?: string,
     direction: "forwards" | "backwards" = "forwards",
-    limit = 50
+    limit = 20
 ): Promise<PlayerMatchesPage> {
     const isForwards = direction === "forwards";
     const [cursorTime, cursorId] = cursor
