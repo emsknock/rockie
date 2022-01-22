@@ -29,16 +29,18 @@ export const isValidCursor = (cursor: string) => {
     }
 };
 
+export type PlayerMatchesPage = {
+    cursorForwards: string | null;
+    cursorBackwards: string | null;
+    page: MatchRecord[];
+};
+
 export default async function getPlayerMatches(
     name: string,
     cursor?: string,
     direction: "forwards" | "backwards" = "forwards",
     limit = 50
-): Promise<{
-    cursorForwards: string | null;
-    cursorBackwards: string | null;
-    page: MatchRecord[];
-}> {
+): Promise<PlayerMatchesPage> {
     const isForwards = direction === "forwards";
     const [cursorTime, cursorId] = cursor
         ? deserialiseCursor(cursor)
