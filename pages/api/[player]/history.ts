@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { refreshDatabase, getPlayerMatches } from "bad-api-service/history";
-import { isValidCursor } from "bad-api-service/history";
+import {
+    refreshDatabase,
+    getPlayerMatches,
+    isValidCursor,
+} from "bad-api-service/history";
 
 export default async function handler(
     req: NextApiRequest,
