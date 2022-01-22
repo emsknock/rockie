@@ -8,9 +8,9 @@ import type {
 import create from "zustand";
 import produce from "immer";
 import sock from "./socket";
+import parseMessage from "./api-events";
 import { watcherUrl } from "utils/env";
 import { gameResult } from "utils/game-result";
-import { parseApiMessage } from "./api-events";
 
 type State = {
     connected: boolean;
@@ -71,7 +71,7 @@ const useSocketState = create<State>((set) => {
     }
 
     async function handleSocketMessage(message: MessageEvent<any>) {
-        const event = await parseApiMessage(message.data);
+        const event = await parseMessage(message.data);
         return event.type === "GAME_BEGIN"
             ? beginGame(event)
             : resolveGame(event);

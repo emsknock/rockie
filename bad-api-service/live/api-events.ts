@@ -2,7 +2,7 @@ import type { ParsedGameBeginEvent, ParsedGameResultEvent } from "./types";
 import { GestureId } from "utils/gestures";
 import { gameIdNormaliser } from "utils/game-ids";
 
-export async function parseApiMessage(
+export default async function parseApiMessage(
     data: any
 ): Promise<ParsedGameBeginEvent | ParsedGameResultEvent> {
     // FIXME: Git submodules would probably allow us to share the code between the
