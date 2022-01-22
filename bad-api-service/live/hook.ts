@@ -4,6 +4,12 @@ import { EffectCallback, useEffect, useState } from "react";
 import { watcherUrl } from "utils/env";
 import useSWR from "swr";
 
+/**
+ * Provides a list of currently ongoing and recently resolved games.
+ *
+ * If the WebSocket connection goes down, falls back to pinging
+ * bad-api-watcher and providing the list of current games from there.
+ */
 export const useLiveState = () => {
     const socket = useSocketState();
     const fallback = useSWR<(StateResolvedMatch | StateOngoingMatch)[]>(
@@ -25,6 +31,15 @@ export const useLiveState = () => {
     };
 };
 
+/**
+ * This hook was supposed to help with a feature where, if the user had a
+ * player's page open and that a WebSocket event indicated that player taking
+ * part in a new game, the app would show a "new data available" button to
+ * refresh the view. It turned out, however, that more often than not, the
+ * bad api history *already had results of games that weren't resolved yet
+ * according to the WebSocket*. Thus the "new data available" would've been
+ * a lie.
+ */
 export const usePlayerWatcher = (
     name: string,
     callbacks: {
