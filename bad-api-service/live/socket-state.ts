@@ -102,15 +102,6 @@ const useSocketState = create<State>((set) => {
             set((s) => ({
                 matches: s.matches.filter((match) => match.id !== id),
             })),
-        clearResolvedMatchesByPlayer: (name) =>
-            set((s) => ({
-                matches: s.matches.filter(
-                    (match) =>
-                        match.isResolved &&
-                        match.aPlayer !== name &&
-                        match.bPlayer !== name
-                ),
-            })),
     };
 });
 
