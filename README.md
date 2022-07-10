@@ -4,7 +4,7 @@
 
 A rock-paper-scissors statistics app. My submission for the Summer 2022 Developer pre-assignment at Reaktor.
 
-A live demo is running at http://ems-rockie.herokuapp.com. With a helper service running at https://ems-rockie-watcher.herokuapp.com.
+A live demo ~~is~~ **was** running at http://ems-rockie.herokuapp.com. With a helper service running at https://ems-rockie-watcher.herokuapp.com.
 
 ## Structure
 
